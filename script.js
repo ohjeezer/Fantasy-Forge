@@ -71,6 +71,35 @@ document.addEventListener("DOMContentLoaded", function () {
     drawbacks: ["attracts moths after sunset","speaks in its creators voice","becomes cold whenever used","must be complimented before functioning","leaves a faint glittering trail","causes dreams of an unknown city","works only while unobserved","changes the bearers hair color","refuses anyone who breaks a promise","quietly counts each use aloud"]
   };
 
+
+  // Additional variety pools. These extend the working base data without changing its structure.
+  DATA.origins.push("a desert caravan crossing","an underground city built around hot springs","a storm-battered island","a remote observatory","a famous gladiatorial school","a family-owned river barge","a woodland shrine","a city built over older ruins","a royal household fallen from favor","a plague camp that survived","a community of monster tamers","a border village divided by two kingdoms","a lighthouse monastery","a traveling merchant fleet","a hidden valley settlement");
+  DATA.goals.push("recover a mentor's lost research","found an independent guild","end a feud between two families","earn forgiveness for a past failure","locate a vanished hometown","destroy a dangerous family relic","write the definitive account of a forgotten war","free someone from an unjust contract","find a cure for a magical illness","build a bridge between rival cultures","return a sacred object","learn why their memories were altered","redeem a former enemy","protect the last member of an ancient order","complete an impossible map");
+  DATA.traits.push("always asks one question too many","speaks plainly even to powerful people","collects small souvenirs from every journey","remembers every promise","laughs at danger","treats every problem like a puzzle","offers food before conversation","keeps meticulous notes","never raises their voice","assumes everyone has a price","uses elaborate metaphors","is fiercely protective of apprentices","turns every story into a lesson","prefers animals to crowds","is unfailingly punctual");
+  DATA.secrets.push("works for a rival faction","cannot read despite pretending otherwise","carries a key with no known lock","is haunted by a harmless but talkative spirit","helped create the current crisis","has a hidden twin","is secretly writing a scandalous chronicle","owes their life to the villain","belongs to a banned society","knows the ruler is an impostor","has been replacing stolen funds","can enter dreams","made a bargain with a dragon","is immune to a local curse","knows a safe route through forbidden territory");
+  DATA.fears.push("mirrors","being recognized by an old ally","magic that alters memory","large crowds","storms at sea","being forced to choose between friends","silence lasting too long","losing a treasured journal","heights","becoming responsible for innocent deaths","failing in front of a mentor","sleeping outdoors","small enclosed spaces","hearing their true name spoken","the return of an old rival");
+  DATA.flaws.push("promises more than they can deliver","is incapable of admitting uncertainty","treats every disagreement as a competition","spends money impulsively","protects friends even when they are wrong","cannot resist forbidden knowledge","is needlessly secretive","confuses bluntness with honesty","takes insults to their family personally","abandons plans when bored","assumes authority figures are corrupt","tries to solve emotional problems with gifts","refuses to retreat","becomes reckless when tired","believes luck will fix poor planning");
+  DATA.objectives.push("recover a stolen treaty","escort witnesses to a distant trial","investigate a town where nobody dreams","recover supplies from a monster-infested battlefield","identify a saboteur inside a guild","return a runaway magical creature","break a siege without open battle","explore a newly opened sinkhole","protect a festival from a predicted attack","retrieve a ship lost inland","stop counterfeit healing potions","find the missing heir to a minor house","remove a haunting without harming the spirit","deliver medicine during a blockade","win a contest whose rules are being manipulated");
+  DATA.locations.push("a drowned library","a palace under renovation","a bridge-town suspended over a gorge","an orchard where time runs slowly","a monastery carved into sea cliffs","a battlefield covered in flowers","an abandoned royal menagerie","a frozen ship trapped on land","a market that appears only at dusk","a city sewer converted into a shrine","a quarry exposing impossible ruins","a giant hollow tree settlement","a windmill surrounded by standing stones","a hidden harbor beneath a cemetery","a canyon filled with petrified giants");
+  DATA.villains.push("a celebrated hero hiding a crime","a sentient weapon manipulating its owner","a royal adviser protecting a secret","a healer spreading dependence on a false cure","a smuggler with political protection","an ancient spirit enforcing an outdated oath","a rival adventuring company","a magistrate selling verdicts","a dragon disguised as a patron","a guild leader sabotaging competitors","a prophet causing the events they predict","a collector imprisoning magical beings","a military commander prolonging a conflict","a bard whose songs compel obedience","a noble family acting through hired agents");
+  DATA.complications.push("the party is mistaken for the criminals","the objective moves every sunrise","the only witness refuses to speak publicly","the villain has legal ownership of the target","completing the mission breaks an older agreement","the route is safe only during bad weather","the quest giver disappears","a party member is named in an old prophecy","the reward belongs to someone else","the enemy offers a better explanation","local custom forbids the obvious solution","the target has already been divided into pieces","a festival fills the area with civilians","the map deliberately omits a settlement","the supposed monster is guarding refugees");
+  DATA.rewards.push("a deed to an abandoned tower","a permanent discount with a merchant network","a letter of introduction to a powerful scholar","an intelligent but opinionated map","a minor title and ceremonial weapon","a trained messenger bird","legal immunity for one past offense","a parcel of productive farmland","access to a teleportation circle","a chest of rare crafting materials","the services of a skilled guide","a secret route into the capital","ownership of a small ship","a protective blessing","the truth about a historical mystery");
+  DATA.effects.push("can change its damage type at dawn","reveals tracks left within the last hour","creates a brief wall of wind","lets the bearer speak a command across a battlefield","glows when its owner is being followed","can sever one magical bond each week","strikes with additional force during storms","protects the bearer from being disarmed","leaves harmless sparks shaped like runes","can summon itself from a nearby room","becomes weightless while climbing","allows one missed attack to be repeated each day","deals extra damage to shapechangers","can illuminate invisible creatures","stores the sound of its last strike");
+  DATA.appearances.push("covered in tiny engraved constellations","woven from metallic thread","made of translucent amber","set with a stone that reflects a different room","painted with scenes that change each season","assembled from mismatched antique parts","carved with names in forgotten languages","surrounded by a faint scent of cedar","cold on one side and warm on the other","seemingly ordinary until held","decorated with miniature silver bells","stained by ink that never dries","wrapped in leather from an unknown beast","marked with a maker's seal that moves","shot through with veins of blue light");
+  DATA.powers.push("translates one written language each day","makes a small object temporarily weightless","summons clean drinking water","conceals one page of writing","remembers the route last traveled","creates a silent alarm around a campsite","purifies spoiled food","shows the direction of the nearest settlement","copies a simple nonmagical key","projects a map of the surrounding mile","detects structural weakness","keeps its bearer dry in rain","stores a short spoken message","warms a small room","identifies whether a promise was knowingly broken");
+  DATA.drawbacks.push("will not function underground","demands a new name from every owner","makes nearby clocks run late","causes ink to fade around it","attracts curious cats","repeats the last word spoken nearby","works only after sunset","makes metal objects taste like salt","occasionally swaps two small carried items","cannot be willingly sold","leaves footprints that glow briefly","snores when stored in a closed container","grows heavier after every lie","requires a drop of fresh water each morning","refuses to cross a threshold without permission");
+
+  const professions = ["Guard","Merchant","Scholar","Artisan","Guide","Healer","Courier","Scribe","Hunter","Sailor","Innkeeper","Blacksmith","Herbalist","Cartographer","Librarian","Interpreter","Stablemaster","Cook","Jeweler","Tailor","Priest","Investigator","Dockmaster","Caravan master","Messenger","Miner","Actor","Teacher","Apothecary","Surveyor"];
+  const partyTypes = ["Adventuring Company","Mercenary Band","Holy Order","Exploration Guild","Monster Hunters","Rebel Cell","Mage Circle","Treasure Seekers","Caravan Guard","Scholars' Fellowship","Bounty Hunters","Rescue Company","Diplomatic Escort","Relic Seekers","Border Wardens"];
+  const reputations = ["Reliable professionals","Fearless but destructive","Famous negotiators","Monster specialists","Lucky survivors","Discreet problem-solvers","Protectors of common folk","Scholars with swords","Expensive but effective","Always arrive too late, but finish the job","Known for impossible rescues","Distrusted by nobles","Welcome in frontier towns","Never abandon a contract","Leave every campsite cleaner than they found it"];
+  const atmospheres = ["warm and welcoming","orderly and expensive","crowded with travelers","quiet and discreet","bright and chaotic","favored by locals","tense but professional","old-fashioned and trusted","filled with unusual aromas","busy at all hours","decorated with trophies","understaffed but friendly","formal and hushed","loud enough for private conversation","recently renovated","worn down but spotless","popular with adventurers","avoided by the city watch","known for strict rules","full of regular customers"];
+  const rumors = ["a sealed cellar opens at midnight","one employee is a retired adventurer","a customer pays with coins from a vanished kingdom","a tunnel beneath the building reaches the old wall","the owner has a map they refuse to sell","inventory is being replaced with perfect copies","a ghost leaves warnings","a hidden room hosts private auctions","the business was won in a card game","a noble visits in disguise","one wall is actually a dormant portal","the owner keeps an unpaid royal tab","a monster once worked here peacefully","the basement predates the city","a rival plans to buy the building","the sign changes wording during storms","someone receives letters through the chimney","a famous criminal uses a false name here","the safest room is never rented","the business closes on a date nobody explains"];
+
+  let pendingNpc = null;
+  let questGiverNpc = null;
+  let placeOwnerNpc = null;
+  let placeWorkerNpcs = [];
+
   const generatorMap = { dnd:["Character Name","Backstory","Quest","Place","Party Name","NPC","Weapon","Magic Item"], skyrim:["Character Name","Weapon"] };
   let game = "dnd";
   let generator = "Character Name";
@@ -102,13 +131,15 @@ document.addEventListener("DOMContentLoaded", function () {
   function buildControls() {
     const box = byId("controls");
     if (generator === "Character Name") {
-      box.innerHTML = `<label class="field wide"><span>Original name / random seed</span><input id="seedInput" value="${seedText}"></label><label class="field"><span>Race</span><select id="raceInput">${options(currentRaces())}</select></label><label class="field"><span>${roleLabel()}</span><select id="roleInput">${options(currentRoles())}</select></label><label class="field"><span>Style</span><select id="styleInput">${options(DATA.styles)}</select></label><div class="checks"><label><input id="randomRace" type="checkbox"> Random race</label><label><input id="randomRole" type="checkbox"> Random ${roleLabel().toLowerCase()}</label></div>`;
+      box.innerHTML = `<label class="field wide"><span>Original name / random seed</span><input id="seedInput" value="${seedText}"></label><label class="field"><span>Race</span><select id="raceInput"><option>Random</option>${options(currentRaces())}</select></label><label class="field"><span>${roleLabel()}</span><select id="roleInput"><option>Random</option>${options(currentRoles())}</select></label><label class="field"><span>Style</span><select id="styleInput">${options(DATA.styles)}</select></label>`;
     } else if (generator === "Backstory" || generator === "NPC") {
       box.innerHTML = `<label class="field"><span>Race</span><select id="raceInput"><option>Random</option>${options(DATA.dndRaces)}</select></label><label class="field"><span>Class</span><select id="classInput"><option>Random</option>${options(DATA.classes)}</select></label>`;
     } else if (generator === "Place") {
-      box.innerHTML = `<label class="field"><span>Place type</span><select id="placeType">${options(Object.keys(DATA.places))}</select></label><label class="field"><span>Total staff</span><select id="staffCount">${options([1,2,3,4])}</select></label>`;
+      box.innerHTML = `<label class="field"><span>Place type</span><select id="placeType"><option>Random</option>${options(Object.keys(DATA.places))}</select></label><label class="field"><span>Total staff</span><select id="staffCount">${options([1,2,3,4])}</select></label>`;
     } else if (generator === "Weapon") {
       box.innerHTML = `<label class="field"><span>Weapon type</span><select id="weaponType"><option>Random</option>${options(DATA.weaponTypes)}</select></label>`;
+    } else if (generator === "Magic Item") {
+      box.innerHTML = `<label class="field"><span>Item type</span><select id="itemType"><option>Random</option>${options(["Wondrous Item","Ring","Wand","Armor","Potion","Scroll","Charm","Instrument","Tool","Rod","Staff","Clothing","Container"])}</select></label>`;
     } else box.innerHTML = "";
   }
 
@@ -117,34 +148,57 @@ document.addEventListener("DOMContentLoaded", function () {
     return !el || el.value === "Random" ? pick(list) : el.value;
   }
 
+  function makeNpc(base={}) {
+    const race = base.Race || selected("raceInput", DATA.dndRaces);
+    return { Name:base.Name || raceName(race), Race:race, Class:base.Class || selected("classInput",DATA.classes), Level:base.Level || String(Math.floor(Math.random()*15)+1), Profession:base.Profession || pick(professions), Trait:pick(DATA.traits), Origin:pick(DATA.origins), Goal:pick(DATA.goals), Secret:pick(DATA.secrets), Fear:pick(DATA.fears), Flaw:pick(DATA.flaws) };
+  }
+
+  function openNpc(person) {
+    pendingNpc = person;
+    game = "dnd";
+    document.querySelectorAll(".tab").forEach(tab=>tab.classList.toggle("active",tab.dataset.game==="dnd"));
+    byId("generatorType").innerHTML = options(generatorMap.dnd);
+    byId("generatorType").value = "NPC";
+    generator = "NPC";
+    buildControls();
+    result = {...pendingNpc};
+    pendingNpc = null;
+    render();
+    window.scrollTo({top:0,behavior:"smooth"});
+  }
+
   function generateAll() {
     if (generator === "Character Name") {
       const seedInput = byId("seedInput");
       seedText = seedInput.value.trim() || seedText;
-      const race = byId("randomRace").checked ? pick(currentRaces()) : byId("raceInput").value;
-      const role = byId("randomRole").checked ? pick(currentRoles()) : byId("roleInput").value;
+      const race = selected("raceInput",currentRaces());
+      const role = selected("roleInput",currentRoles());
       const style = byId("styleInput").value;
-      result = { Name: transformedName(game,seedText,race,style), Seed: seedText || "Race-generated", Race: race, [roleLabel()]: role, Style: style };
+      result = { Name:transformedName(game,seedText,race,style), Seed:seedText || "Race-generated", Race:race, [roleLabel()]:role, Style:style };
     } else if (generator === "Backstory") {
-      const race = selected("raceInput", DATA.dndRaces);
+      const race = selected("raceInput",DATA.dndRaces);
       result = { Name:raceName(race), Race:race, Class:selected("classInput",DATA.classes), Origin:pick(DATA.origins), Goal:pick(DATA.goals), Trait:pick(DATA.traits), Secret:pick(DATA.secrets), Fear:pick(DATA.fears), Flaw:pick(DATA.flaws) };
     } else if (generator === "NPC") {
-      const race = selected("raceInput", DATA.dndRaces);
-      result = { Name:raceName(race), Race:race, Class:selected("classInput",DATA.classes), Level:String(Math.floor(Math.random()*15)+1), Profession:pick(["Guard","Merchant","Scholar","Artisan","Guide","Healer","Courier","Scribe","Hunter","Sailor"]), Trait:pick(DATA.traits), Origin:pick(DATA.origins), Goal:pick(DATA.goals), Secret:pick(DATA.secrets), Fear:pick(DATA.fears), Flaw:pick(DATA.flaws) };
+      result = pendingNpc ? {...pendingNpc} : makeNpc();
+      pendingNpc = null;
     } else if (generator === "Quest") {
-      result = { Name:`The ${pick(DATA.partyA)} ${pick(["Relic","Oath","Vault","Crown","Road","Shadow"])}`, Objective:pick(DATA.objectives), Location:pick(DATA.locations), Villain:pick(DATA.villains), Complication:pick(DATA.complications), Reward:pick(DATA.rewards), "Quest giver":raceName(pick(DATA.dndRaces)) };
+      questGiverNpc = makeNpc();
+      result = { Name:`The ${pick(DATA.partyA)} ${pick(["Relic","Oath","Vault","Crown","Road","Shadow","Bell","Key","Ember","Promise","Star","Thorn"])}`, Objective:pick(DATA.objectives), Location:pick(DATA.locations), Villain:pick(DATA.villains), Complication:pick(DATA.complications), Reward:pick(DATA.rewards), "Quest giver":`${questGiverNpc.Name} • ${questGiverNpc.Profession}` };
     } else if (generator === "Place") {
-      const type = byId("placeType").value;
+      const type = selected("placeType",Object.keys(DATA.places));
       const data = DATA.places[type];
       const staff = Number(byId("staffCount").value);
-      result = { Name:`The ${pick(DATA.placeAdjectives)} ${pick(data.nouns)}`, Type:type, Specialty:pick(data.specialties), Atmosphere:pick(["warm and welcoming","orderly and expensive","crowded with travelers","quiet and discreet","bright and chaotic","favored by locals","tense but professional","old-fashioned and trusted"]), Rumor:pick(DATA.secrets), Owner:`${raceName(pick(DATA.dndRaces))} • ${data.workers[0]}`, Workers:Array.from({length:Math.max(0,staff-1)},(_,i)=>`${raceName(pick(DATA.dndRaces))} • ${data.workers[(i+1)%data.workers.length]}`).join("\n") || "None" };
+      placeOwnerNpc = makeNpc({Profession:data.workers[0]});
+      placeWorkerNpcs = Array.from({length:Math.max(0,staff-1)},(_,i)=>makeNpc({Profession:data.workers[(i+1)%data.workers.length]}));
+      result = { Name:`The ${pick(DATA.placeAdjectives)} ${pick(data.nouns)}`, Type:type, Specialty:pick(data.specialties), Atmosphere:pick(atmospheres), Rumor:pick(rumors), Owner:`${placeOwnerNpc.Name} • ${placeOwnerNpc.Profession}`, Workers:placeWorkerNpcs.map(person=>`${person.Name} • ${person.Profession}`).join("\n") || "None" };
     } else if (generator === "Party Name") {
-      result = { Name:`The ${pick(DATA.partyA)} ${pick(DATA.partyN)}`, Type:pick(["Adventuring Company","Mercenary Band","Holy Order","Exploration Guild","Monster Hunters","Rebel Cell","Mage Circle","Treasure Seekers"]), Motto:pick(DATA.mottos), Reputation:pick(["Reliable professionals","Fearless but destructive","Famous negotiators","Monster specialists","Lucky survivors","Discreet problem-solvers","Protectors of common folk","Scholars with swords"]) };
+      result = { Name:`The ${pick(DATA.partyA)} ${pick(DATA.partyN)}`, Type:pick(partyTypes), Motto:pick(DATA.mottos), Reputation:pick(reputations) };
     } else if (generator === "Weapon") {
-      const type = selected("weaponType", DATA.weaponTypes);
-      result = { Name:pick(DATA.weaponNames[type]), Type:type, [game === "skyrim" ? "Material" : "Rarity"]:pick(game === "skyrim" ? DATA.materials : DATA.rarities), Effect:pick(DATA.effects), Quirk:pick(DATA.traits), History:pick(DATA.origins) };
+      const type = selected("weaponType",DATA.weaponTypes);
+      result = { Name:pick(DATA.weaponNames[type]), Type:type, [game==="skyrim"?"Material":"Rarity"]:pick(game==="skyrim"?DATA.materials:DATA.rarities), Effect:pick(DATA.effects), Quirk:pick(DATA.traits), History:pick(DATA.origins) };
     } else {
-      result = { Name:`${pick(DATA.placeAdjectives)} ${pick(DATA.itemForms)}`, Category:pick(["Wondrous Item","Ring","Wand","Armor","Tool","Potion","Scroll","Charm","Instrument"]), Rarity:pick(DATA.rarities), Appearance:pick(DATA.appearances), Power:pick(DATA.powers), Drawback:pick(DATA.drawbacks), Origin:pick(DATA.origins) };
+      const itemType = selected("itemType",["Wondrous Item","Ring","Wand","Armor","Potion","Scroll","Charm","Instrument","Tool","Rod","Staff","Clothing","Container"]);
+      result = { Name:`${pick(DATA.placeAdjectives)} ${pick(DATA.itemForms)}`, Type:itemType, Rarity:pick(DATA.rarities), Appearance:pick(DATA.appearances), Power:pick(DATA.powers), Drawback:pick(DATA.drawbacks), Origin:pick(DATA.origins) };
     }
     render();
   }
@@ -157,6 +211,26 @@ document.addEventListener("DOMContentLoaded", function () {
       if (key === "Archetype") result.Archetype = pick(DATA.archetypes);
       result.Seed = seedText || "Race-generated";
       result.Name = transformedName(game,seedText,result.Race,result.Style);
+    } else if (generator === "Place" && key === "Type") {
+      const newType = pick(Object.keys(DATA.places));
+      const data = DATA.places[newType];
+      result.Type = newType;
+      result.Name = `The ${pick(DATA.placeAdjectives)} ${pick(data.nouns)}`;
+      result.Specialty = pick(data.specialties);
+      placeOwnerNpc = makeNpc({Profession:data.workers[0]});
+      placeWorkerNpcs = placeWorkerNpcs.map((_,i)=>makeNpc({Profession:data.workers[(i+1)%data.workers.length]}));
+      result.Owner = `${placeOwnerNpc.Name} • ${placeOwnerNpc.Profession}`;
+      result.Workers = placeWorkerNpcs.map(person=>`${person.Name} • ${person.Profession}`).join("\n") || "None";
+    } else if (generator === "Place" && key === "Owner") {
+      placeOwnerNpc = makeNpc({Profession:DATA.places[result.Type].workers[0]});
+      result.Owner = `${placeOwnerNpc.Name} • ${placeOwnerNpc.Profession}`;
+    } else if (generator === "Place" && key === "Workers") {
+      const roles=DATA.places[result.Type].workers;
+      placeWorkerNpcs = placeWorkerNpcs.map((_,i)=>makeNpc({Profession:roles[(i+1)%roles.length]}));
+      result.Workers = placeWorkerNpcs.map(person=>`${person.Name} • ${person.Profession}`).join("\n") || "None";
+    } else if (generator === "Quest" && key === "Quest giver") {
+      questGiverNpc = makeNpc();
+      result["Quest giver"] = `${questGiverNpc.Name} • ${questGiverNpc.Profession}`;
     } else {
       const previous = {...result};
       generateAll();
@@ -165,8 +239,7 @@ document.addEventListener("DOMContentLoaded", function () {
       result[key] = fresh[key];
       if ((generator === "Backstory" || generator === "NPC") && key === "Race") result.Name = raceName(result.Race);
       if ((generator === "Backstory" || generator === "NPC") && key === "Name") result.Name = raceName(result.Race);
-      if (generator === "Weapon" && key === "Type") result.Name = pick(DATA.weaponNames[result.Type]);
-      if (generator === "Weapon" && key === "Name") result.Name = pick(DATA.weaponNames[result.Type]);
+      if (generator === "Weapon" && (key === "Type" || key === "Name")) result.Name = pick(DATA.weaponNames[result.Type]);
     }
     render();
   }
@@ -184,8 +257,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function render(){
     byId("resultTitle").textContent = result.Name || generator;
-    byId("resultFields").innerHTML = Object.entries(result).map(([key,value])=>`<div class="result-field ${String(value).length>65?"full":""}"><span class="result-label">${key}</span><div class="result-value">${value}</div>${key==="Style"?"":`<button class="reroll" type="button" data-key="${key}">↻</button>`}</div>`).join("");
+    byId("resultFields").innerHTML = Object.entries(result).map(([key,value])=>{
+      let action="";
+      if(generator==="Quest" && key==="Quest giver") action=`<button class="secondary-button npc-link" type="button" data-open-quest-npc>Generate NPC</button>`;
+      if(generator==="Place" && key==="Owner") action=`<button class="secondary-button npc-link" type="button" data-open-owner-npc>Generate owner NPC</button>`;
+      if(generator==="Place" && key==="Workers" && placeWorkerNpcs.length) action=placeWorkerNpcs.map((person,index)=>`<button class="secondary-button npc-link" type="button" data-open-worker="${index}">Generate ${person.Name}</button>`).join(" ");
+      return `<div class="result-field ${String(value).length>65?"full":""}"><span class="result-label">${key}</span><div class="result-value">${value}</div>${key==="Style"?"":`<button class="reroll" type="button" data-key="${key}">↻</button>`}${action}</div>`;
+    }).join("");
     document.querySelectorAll("[data-key]").forEach(button=>button.addEventListener("click",()=>rerollField(button.dataset.key)));
+    const questBtn=document.querySelector("[data-open-quest-npc]"); if(questBtn) questBtn.addEventListener("click",()=>openNpc(questGiverNpc));
+    const ownerBtn=document.querySelector("[data-open-owner-npc]"); if(ownerBtn) ownerBtn.addEventListener("click",()=>openNpc(placeOwnerNpc));
+    document.querySelectorAll("[data-open-worker]").forEach(button=>button.addEventListener("click",()=>openNpc(placeWorkerNpcs[Number(button.dataset.openWorker)])));
     renderFavorites();
   }
 
