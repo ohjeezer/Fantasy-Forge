@@ -1,0 +1,595 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#17130f">
+  <title>Fantasy Name Forge Toolkit</title>
+<style>
+:root{color-scheme:dark;--bg:#0f0d0b;--surface:#191510;--surface2:#241d16;--border:#493925;--gold:#d7ad58;--gold2:#f0d184;--text:#f4ead7;--muted:#b8a993;--danger:#e8a3a3;font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif}*{box-sizing:border-box}body{margin:0;min-height:100vh;color:var(--text);background:radial-gradient(circle at 15% 0,rgba(126,83,35,.2),transparent 30rem),linear-gradient(#15110d,var(--bg))}.app-shell{width:min(960px,calc(100% - 28px));margin:auto;padding:45px 0}.hero{text-align:center;margin-bottom:25px}.eyebrow{margin:0 0 7px;color:var(--gold);font-size:.74rem;font-weight:800;letter-spacing:.19em;text-transform:uppercase}h1{margin:0;font:clamp(2.3rem,7vw,4.5rem)/1 Georgia,serif}.subtitle{color:var(--muted)}.panel{border:1px solid var(--border);border-radius:20px;background:linear-gradient(145deg,var(--surface2),var(--surface));overflow:hidden;box-shadow:0 20px 50px #0006}.tabs{display:grid;grid-template-columns:repeat(3,1fr);border-bottom:1px solid var(--border)}.tab{border:0;padding:16px;color:var(--muted);background:#0002;font-weight:850;cursor:pointer}.tab+.tab{border-left:1px solid var(--border)}.tab.active{color:#21180b;background:linear-gradient(135deg,var(--gold2),var(--gold))}.panel-body{padding:24px}.field{display:grid;gap:7px;color:var(--gold2);font-size:.86rem;font-weight:800}.field input,.field select{min-height:46px;border:1px solid #5b4630;border-radius:10px;padding:0 12px;color:var(--text);background:#110f0c}.controls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px;margin-top:16px}.field.wide{grid-column:1/-1}.checks{grid-column:1/-1;display:flex;gap:18px;flex-wrap:wrap;padding:12px;border:1px solid var(--border);border-radius:10px;color:var(--muted)}.checks label{display:flex;gap:7px;align-items:center}.primary-button{width:100%;margin-top:18px;border:0;border-radius:11px;padding:14px;color:#21180b;background:linear-gradient(135deg,var(--gold2),var(--gold));font-weight:900;cursor:pointer}.result-card{margin-top:20px;border:1px solid #4d3c29;border-radius:15px;background:#0003;overflow:hidden}.result-head{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:18px;border-bottom:1px solid #453523}.result-head h2{margin:0;color:var(--gold2);font:1.8rem Georgia,serif}.result-actions{display:flex;gap:8px}.secondary-button,.text-button,.reroll{border:1px solid #685133;border-radius:8px;padding:8px 11px;color:var(--gold2);background:transparent;font-weight:760;cursor:pointer}.result-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.result-field{position:relative;min-height:92px;padding:15px 50px 15px 17px;border-right:1px solid #3c2f22;border-bottom:1px solid #3c2f22}.result-field.full{grid-column:1/-1}.result-label{display:block;color:var(--gold);font-size:.7rem;font-weight:900;letter-spacing:.12em;text-transform:uppercase;margin-bottom:7px}.result-value{white-space:pre-wrap;line-height:1.5}.reroll{position:absolute;right:9px;top:10px;padding:5px 8px}.favorites-panel{margin-top:20px;padding:22px}.section-heading{display:flex;justify-content:space-between;align-items:center}.section-heading h2{margin:0;font-family:Georgia,serif}.text-button{color:var(--danger)}.favorites-list{display:grid;gap:9px;list-style:none;padding:0}.favorite-item{display:flex;justify-content:space-between;gap:12px;border:1px solid #443625;border-radius:10px;padding:12px;background:#0002}.favorite-item pre{white-space:pre-wrap;margin:0;color:var(--muted);font:inherit}.remove{border:0;background:transparent;color:var(--danger);cursor:pointer}.empty-state,footer{color:var(--muted)}footer{text-align:center;padding-top:18px;font-size:.8rem}@media(max-width:650px){.controls,.result-grid{grid-template-columns:1fr}.field.wide,.result-field.full{grid-column:auto}.result-head{align-items:flex-start;flex-direction:column}.result-actions{width:100%;flex-wrap:wrap}}
+.npc-link{position:relative;margin-top:10px;margin-right:6px;padding:6px 9px;font-size:.78rem}
+
+.build-marker{margin:8px 0 0;color:var(--gold);font-size:.76rem;font-weight:800;letter-spacing:.05em}
+
+.lock-button{position:absolute;right:48px;top:10px;border:1px solid #685133;border-radius:8px;padding:5px 8px;color:var(--muted);background:transparent;cursor:pointer}.lock-button.locked{color:#21180b;background:var(--gold2)}.result-field.has-lock{padding-right:92px}.utility-note{grid-column:1/-1;color:var(--muted);font-size:.83rem}.favorite-actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.favorite-open{border:1px solid #52705a;border-radius:7px;background:transparent;color:#9dccaa;padding:6px 8px;cursor:pointer;font-weight:700}
+
+.lock-button{position:absolute;right:48px;top:10px;border:1px solid #685133;border-radius:8px;padding:5px 8px;color:var(--muted);background:transparent;cursor:pointer}.lock-button.locked{color:#21180b;background:var(--gold2)}.result-field.has-lock{padding-right:102px}.utility-note{grid-column:1/-1;color:var(--muted);font-size:.83rem}.favorite-actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.favorite-open{border:1px solid #52705a;border-radius:7px;background:transparent;color:#9dccaa;padding:6px 8px;cursor:pointer;font-weight:700}.build-marker{color:var(--gold);font-size:.76rem;font-weight:800}
+
+.seed-row{display:grid;grid-template-columns:1fr auto;gap:8px}.seed-row input{min-width:0}.backstory-action{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.backstory-action>div{display:flex;gap:8px;flex-wrap:wrap}.character-sheet-note{color:var(--muted)}
+.favorite-restore{border:1px solid #52705a;border-radius:8px;background:transparent;color:#9dccaa;padding:7px 9px;margin-bottom:8px;cursor:pointer;font-weight:800}
+.generator-select-fallback{position:absolute!important;left:-9999px!important;width:1px!important;height:1px!important;overflow:hidden!important}.generator-tabs{display:flex;gap:8px;flex-wrap:wrap;padding:14px 18px;border-bottom:1px solid var(--border);background:#0002}.generator-tab{border:1px solid #5b4630;border-radius:999px;padding:8px 12px;background:#17120e;color:var(--muted);cursor:pointer;font-weight:800}.generator-tab.active{background:linear-gradient(135deg,var(--gold2),var(--gold));color:#21180b}.sheet-shortcut-row{display:flex;justify-content:flex-end;padding:10px 18px 0}.sheet-shortcut{border:1px solid var(--gold);border-radius:10px;background:transparent;color:var(--gold2);padding:9px 13px;font-weight:900;cursor:pointer}.sheet-shortcut[hidden]{display:none!important}
+.sheet-record-actions{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-top:8px}.remove-record{border:1px solid #75433e;border-radius:8px;background:transparent;color:var(--danger);padding:6px 9px;cursor:pointer}
+.builder-section{grid-column:1/-1;border:1px solid #59452f;border-radius:12px;padding:14px;background:#0b090777}.builder-section h3{margin:0 0 12px;color:var(--gold);font-family:Georgia,serif}.builder-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.builder-grid .checks,.builder-grid .utility-note{grid-column:1/-1}@media(max-width:800px){.builder-grid{grid-template-columns:1fr}}
+.generator-action-row{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:10px;align-items:stretch;margin-top:18px}.generator-action-row .primary-button{width:auto;margin-top:0}.generator-action-row .secondary-button{min-width:96px}.result-actions{flex-wrap:wrap}.result-actions [hidden]{display:none!important}@media(max-width:650px){.generator-action-row{grid-template-columns:1fr 1fr}.generator-action-row .primary-button{grid-column:1/-1}}
+.library-note{color:var(--muted)}
+</style></head>
+<body>
+<main class="app-shell">
+  <header class="hero">
+    <p class="eyebrow">Game Master Toolkit</p>
+    <h1>Fantasy Forge</h1>
+    
+  </header>
+
+  <section class="panel">
+    <div class="tabs" role="tablist" aria-label="Game system">
+      <button class="tab active" type="button" data-game="dnd">D&amp;D</button>
+      <button class="tab" type="button" data-game="utilities">Utilities</button>
+    </div>
+
+    <div id="generatorTabs" class="generator-tabs" role="tablist" aria-label="Generators"></div>
+    <div class="sheet-shortcut-row"><button id="openCharacterSheet" class="sheet-shortcut" type="button">Open Character Sheet</button></div>
+    <div class="panel-body">
+      <label class="field generator-select-fallback">
+        <span>Generator</span>
+        <select id="generatorType"></select>
+      </label>
+
+      <div id="controls" class="controls"></div>
+      <div class="generator-action-row">
+        <button id="generateAll" class="primary-button" type="button">Generate all</button>
+        <button id="lockAllButton" class="secondary-button" type="button">Lock all</button>
+        <button id="unlockAllButton" class="secondary-button" type="button">Unlock all</button>
+      </div>
+
+      <section class="result-card" aria-live="polite">
+        <div class="result-head">
+          <h2 id="resultTitle">Result</h2>
+          <div class="result-actions">
+            <button id="copyButton" class="secondary-button" type="button">Copy</button>
+            <button id="favoriteButton" class="secondary-button" type="button">Add favorite</button>
+            <button id="addSheetButton" class="secondary-button" type="button" hidden>Add to Character Sheet</button>
+          </div>
+        </div>
+        <div id="statusMessage" aria-live="polite"></div><div id="resultFields" class="result-grid"></div>
+      </section>
+    </div>
+  </section>
+
+  <section class="panel favorites-panel">
+    <div class="section-heading">
+      <div><p class="eyebrow">Saved locally</p><h2>Favorites</h2></div>
+      <button id="clearFavorites" class="text-button" type="button">Clear all</button>
+    </div>
+    <ul id="favoritesList" class="favorites-list"></ul>
+    <p id="emptyFavorites" class="empty-state">No favorites saved for this generator.</p>
+  </section>
+
+  <footer>Runs entirely in your browser. No generated information is uploaded.</footer>
+</main>
+<script>
+"use strict";
+
+document.addEventListener("DOMContentLoaded", function () {
+  const byId = id => document.getElementById(id);
+  const pick = items => items[Math.floor(Math.random() * items.length)];
+  const options = items => items.map(item => `<option value="${item}">${item}</option>`).join("");
+
+  const DATA = {
+    dndRaces: ["Human","Elf","Dwarf","Halfling","Gnome","Tiefling","Dragonborn","Half-Orc"],
+    classes: ["Barbarian","Bard","Cleric","Druid","Fighter","Monk","Paladin","Ranger","Rogue","Sorcerer","Warlock","Wizard"],
+    skyrimRaces: ["Nord","Breton","Imperial","Redguard","High Elf","Wood Elf","Dark Elf","Orc","Khajiit","Argonian"],
+    archetypes: ["Warrior","Mage","Thief","Assassin","Companion","Dragonborn","Vampire Hunter","Necromancer","Knight","Ranger"],
+    styles: ["Short","Normal","Epic"],
+    dndNames: {
+      Human: [["Alden","Brenna","Caleb","Clara","Dorian","Elara","Gareth","Mara"],["Ashford","Hawthorne","Reed","Vale","Ward"]],
+      Elf: [["Aelar","Caelynn","Faelar","Liora","Naivara","Sylvar","Thalia"],["Dawnbranch","Moonwhisper","Silverleaf","Willowshade"]],
+      Dwarf: [["Bromli","Dagna","Dorn","Hilda","Kazrik","Morgran","Thora"],["Anvilborn","Deepforge","Ironhammer","Stonebeard"]],
+      Halfling: [["Bimble","Meri","Perrin","Pippa","Rosie","Tobin"],["Goodbarrel","Greenhill","Softstep","Underbough"]],
+      Gnome: [["Bix","Fizzwick","Nim","Pipkin","Tinka","Wobble"],["Brassbutton","Copperspark","Gearwhistle","Tinkertop"]],
+      Tiefling: [["Azara","Belros","Kallista","Nyx","Vaelis","Zareth"],["Ashmark","Emberveil","Nightscar","Shadowbrand"]],
+      Dragonborn: [["Arjhan","Balasar","Kriv","Rhogar","Torinn","Vrak"],["Emberscale","Ironscale","Stormclaw","Wyrmblood"]],
+      "Half-Orc": [["Brakka","Drog","Gorza","Karg","Mog","Urzak"],["Bonebreaker","Ironjaw","Redfang","Wolfscar"]]
+    },
+    skyrimNames: {
+      Nord: [["Alfhild","Brynjolf","Eirik","Hjalmar","Ragna","Svenja"],["Battle-Born","Frost-Blood","Snow-Strider","Wolf-Heart"]],
+      Breton: [["Amaund","Corinne","Elodie","Lucien","Renard","Sabine"],["Beauchamp","Dufort","Montclair","Renoit"]],
+      Imperial: [["Cassia","Decimus","Gaius","Julia","Marcellus","Valeria"],["Aventus","Carvain","Septima","Varian"]],
+      Redguard: [["Azadi","Farida","Hakim","Nazir","Raiha","Zafira"],["al-Akir","Rihad","Sahan","Sentinel"]],
+      "High Elf": [["Aelion","Calindil","Eranwe","Ondolemar","Vanus"],["Aelorin","Calion","Larethor","Valinor"]],
+      "Wood Elf": [["Aenadil","Brelas","Erdan","Faevar","Liriel"],["Green-Bough","Leaf-Runner","Silverbark","Wildsong"]],
+      "Dark Elf": [["Arvel","Dratha","Falen","Neloth","Seryn"],["Dren","Hlaalu","Redoran","Telvanni"]],
+      Orc: [["Bagdur","Ghorza","Kharzug","Mogak","Urzoga"],["gro-Batul","gro-Khazgur","gra-Malog","gro-Orsinium"]],
+      Khajiit: [["Dar'Jo","J'zargo","Kharjo","Ra'zirr","S'vasha"],["Bright-Claw","Dune-Walker","Night-Paw","Soft-Step"]],
+      Argonian: [["Beem-Ja","Deeja","Jaree-Ra","Keeva","Veezara"],["Hides-the-Ashes","Reads-the-Stars","Walks-In-Mist"]]
+    },
+    origins: ["a crowded river port","a remote mountain village","a traveling theater company","an isolated forest enclave","a military border town","a monastery built over old ruins","a noble estate in decline","a mining settlement beneath red cliffs","a secluded academy","a frontier fort","a refugee camp that became a town","a fishing village threatened by storms"],
+    goals: ["restore the family reputation","find a missing sibling","repay an impossible debt","map an uncharted ruin","protect a threatened community","recover a stolen relic","break a dangerous curse","expose a powerful fraud","prove a condemned ancestor innocent","master a dangerous gift","return a stolen heirloom","build a sanctuary for outcasts"],
+    traits: ["careful and observant","boisterous but loyal","quietly compassionate","suspicious of strangers","curious to a fault","dry-witted and practical","formal and exacting","recklessly generous","patient until provoked","charming but evasive","methodical under pressure","fearlessly honest"],
+    secrets: ["once served the enemy","carries a falsified identity","knows the location of a forbidden vault","is protecting the real culprit","owes a favor to a thieves guild","is heir to a forgotten title","possesses a dangerous map","receives letters from someone believed dead","is bound by an old magical oath","stole the object everyone is seeking"],
+    fears: ["being forgotten","failing those who depend on them","deep water","losing control of their power","public disgrace","undead creatures","being trapped underground","betrayal by a close ally","returning to their birthplace","the cost of an old promise"],
+    flaws: ["cannot walk away from a challenge","trusts charm too easily","keeps dangerous secrets","mistakes stubbornness for courage","holds grudges","overplans simple problems","refuses help until too late","is distracted by mysteries","judges others too quickly","values victory over diplomacy"],
+    objectives: ["recover a relic before a rival faction","escort a scholar through dangerous territory","investigate disappearances near an abandoned shrine","break a curse afflicting a local family","rescue captives from a hidden stronghold","deliver a sealed object without opening it","identify what is poisoning the water supply","negotiate peace between feuding settlements","stop a ritual before the next full moon","locate a missing expedition","close a portal beneath a public building","track a creature that leaves no footprints"],
+    locations: ["a flooded dwarven mine","a ruined hilltop observatory","catacombs beneath the market district","a forest where paths change overnight","a fortress trapped in permanent winter","an abandoned coastal village","a buried temple beneath farmland","a manor surrounded by unnatural fog","a volcanic cavern filled with glass","a lighthouse whose flame has turned black"],
+    villains: ["a disgraced knight","a patient necromancer","a shapechanging spy","a merchant prince with hired blades","a cult leader claiming divine authority","an exiled mage","a corrupted forest guardian","an ambitious crime boss","a scholar possessed by an artifact","a monster that remembers every victim"],
+    complications: ["the patron withheld a crucial fact","the apparent villain is protecting someone","another party has the same objective","the reward is stolen before payment","the location is slowly collapsing","a trusted guide changes sides","the law considers the party trespassers","success will anger a powerful faction","the relic chooses its own bearer","the deadline is earlier than claimed"],
+    rewards: ["gold and a land grant","a rare enchanted weapon","access to a restricted library","a favor from a noble house","ownership of a small property","a map to another lost site","a magical charm with one charge","guild membership and safe lodging","forgiven debts and public recognition","a trained unusual mount"],
+    placeAdjectives: ["Golden","Silver","Crowned","Wandering","Old","Painted","Restless","Moonlit","Laughing","Copper"],
+    places: {
+      Tavern: { nouns:["Cask","Tankard","Boar","Griffin","Fox"], specialties:["spiced ale and hot stew","music every market night","a private card room","regional drinks","a notorious eating challenge"], workers:["Bartender","Cook","Server"] },
+      Inn: { nouns:["Lantern","Pillow","Traveler","Hearth","Waystone"], specialties:["safe rooms and hot baths","stabling with every room","an early breakfast","secure storage","guides for hire"], workers:["Innkeeper","Cook","Stablehand"] },
+      Blacksmith: { nouns:["Anvil","Hammer","Forge","Coal","Bellows"], specialties:["custom weapons","armor repair","monster-part commissions","ceremonial blades","rush repairs"], workers:["Master smith","Apprentice","Metalworker"] },
+      "Magic Shop": { nouns:["Rune","Star","Orb","Wand","Comet"], specialties:["spell components","minor enchanted objects","arcane identification","warding services","rare inks"], workers:["Arcanist","Apprentice mage","Clerk"] },
+      Apothecary: { nouns:["Mortar","Herb","Briar","Vial","Thistle"], specialties:["healing draughts","rare herbs","antidotes","sleeping tonics","field remedies"], workers:["Apothecary","Herbalist","Gatherer"] },
+      Bookshop: { nouns:["Quill","Tome","Page","Sage","Archive"], specialties:["rare maps","used spellbooks","local histories","translation services","private collections"], workers:["Bookseller","Scribe","Binder"] },
+      Temple: { nouns:["Dawn","Bell","Flame","Mercy","Sanctuary"], specialties:["blessings and healing","sanctuary","religious records","funeral rites","pilgrim supplies"], workers:["Priest","Acolyte","Healer"] },
+      Stable: { nouns:["Horseshoe","Saddle","Mare","Rein","Stallion"], specialties:["fresh mounts","animal boarding","carriage repair","messenger service","trained pack animals"], workers:["Stablemaster","Groom","Driver"] }
+    },
+    partyA: ["Ashen","Broken","Crimson","Emerald","Golden","Last","Silent","Silver","Stormbound","Wandering","Dawnward","Iron","Hidden","Unbroken","Wayward"],
+    partyN: ["Arrows","Banners","Blades","Compasses","Crowns","Griffons","Lanterns","Ravens","Shields","Stars","Wolves","Sentinels","Seekers","Oathkeepers","Wayfinders"],
+    mottos: ["No road untraveled.","Together against the dark.","Fortune favors the prepared.","By oath and iron.","We return with the answer.","None are left behind.","Truth before comfort.","Courage carries the day."],
+    weaponTypes: ["Dagger","Longsword","Greatsword","Rapier","Warhammer","Battleaxe","Halberd","Spear","Shortbow","Longbow","Crossbow","Quarterstaff","Whip","Trident"],
+    weaponNames: {
+      Dagger:["Needle","Fang","Whisper","Thorn"], Longsword:["Oathblade","Kingsedge","Brightsteel","Dawnbite"], Greatsword:["Colossus","Titanfall","Doomcleaver","Warbrand"], Rapier:["Silverwit","Quickthorn","Duelists Grace","Viper"], Warhammer:["Stonefall","Oathbreaker","Thunderhead","Anvils Answer"], Battleaxe:["Skullsplitter","Red Crescent","Timberfall","Warhowl"], Halberd:["Gatekeeper","Long Reach","Sentinel","Crows Beak"], Spear:["Farpoint","Sky-Piercer","First Charge","Boars End"], Shortbow:["Quickstring","Hawkeye","Brushrunner","Swiftbranch"], Longbow:["Farshot","Eagles Reach","Greenwind","Cloudpiercer"], Crossbow:["Last Word","Boltbringer","Iron Click","Watchmans Rest"], Quarterstaff:["Wayfarer","Old Root","Pilgrims Guard","Oakwise"], Whip:["Serpents Kiss","Crackling Vine","Scorpion","Long Memory"], Trident:["Tidecaller","Sea Kings Due","Stormfork","Deepwater"]
+    },
+    rarities: ["Common","Uncommon","Rare","Very Rare","Legendary"],
+    materials: ["Iron","Steel","Dwarven","Elven","Orcish","Glass","Ebony","Daedric","Dragonbone"],
+    effects: ["deals extra radiant damage to undead","returns to its wielder when thrown","casts a protective ward once each day","grants advantage on initiative","creates thunder on a critical hit","marks a struck enemy with pale fire","stores one spell of 3rd level or lower","emits bright light on command","deals extra frost damage","warns of hidden creatures","cuts through nonmagical restraints","briefly silences a struck spellcaster"],
+    itemForms: ["Amulet","Belt","Boots","Bottle","Bracelet","Brooch","Cape","Circlet","Coin","Crown","Gloves","Lantern","Mask","Mirror","Orb","Pendant","Quill","Satchel","Tome","Totem"],
+    appearances: ["etched with interlocking silver runes","made from dark wood with brass fittings","wrapped in faded blue silk","shaped like a sleeping dragon","inlaid with cloudy green crystal","decorated with stars that shift position","carved from ivory-colored stone","polished so it never gathers dust"],
+    powers: ["reveals invisible writing","creates a small extradimensional space","allows brief speech with animals","protects against extreme temperatures","changes color near poison","casts a convincing minor illusion","restores vitality once per day","allows underwater breathing","points toward the nearest shelter","records nearby sound","repairs one mundane object each dawn","produces food for one person each day"],
+    drawbacks: ["attracts moths after sunset","speaks in its creators voice","becomes cold whenever used","must be complimented before functioning","leaves a faint glittering trail","causes dreams of an unknown city","works only while unobserved","changes the bearers hair color","refuses anyone who breaks a promise","quietly counts each use aloud"]
+  };
+
+
+  // Additional variety pools. These extend the working base data without changing its structure.
+  DATA.origins.push("a desert caravan crossing","an underground city built around hot springs","a storm-battered island","a remote observatory","a famous gladiatorial school","a family-owned river barge","a woodland shrine","a city built over older ruins","a royal household fallen from favor","a plague camp that survived","a community of monster tamers","a border village divided by two kingdoms","a lighthouse monastery","a traveling merchant fleet","a hidden valley settlement");
+  DATA.goals.push("recover a mentor's lost research","found an independent guild","end a feud between two families","earn forgiveness for a past failure","locate a vanished hometown","destroy a dangerous family relic","write the definitive account of a forgotten war","free someone from an unjust contract","find a cure for a magical illness","build a bridge between rival cultures","return a sacred object","learn why their memories were altered","redeem a former enemy","protect the last member of an ancient order","complete an impossible map");
+  DATA.traits.push("always asks one question too many","speaks plainly even to powerful people","collects small souvenirs from every journey","remembers every promise","laughs at danger","treats every problem like a puzzle","offers food before conversation","keeps meticulous notes","never raises their voice","assumes everyone has a price","uses elaborate metaphors","is fiercely protective of apprentices","turns every story into a lesson","prefers animals to crowds","is unfailingly punctual");
+  DATA.secrets.push("works for a rival faction","cannot read despite pretending otherwise","carries a key with no known lock","is haunted by a harmless but talkative spirit","helped create the current crisis","has a hidden twin","is secretly writing a scandalous chronicle","owes their life to the villain","belongs to a banned society","knows the ruler is an impostor","has been replacing stolen funds","can enter dreams","made a bargain with a dragon","is immune to a local curse","knows a safe route through forbidden territory");
+  DATA.fears.push("mirrors","being recognized by an old ally","magic that alters memory","large crowds","storms at sea","being forced to choose between friends","silence lasting too long","losing a treasured journal","heights","becoming responsible for innocent deaths","failing in front of a mentor","sleeping outdoors","small enclosed spaces","hearing their true name spoken","the return of an old rival");
+  DATA.flaws.push("promises more than they can deliver","is incapable of admitting uncertainty","treats every disagreement as a competition","spends money impulsively","protects friends even when they are wrong","cannot resist forbidden knowledge","is needlessly secretive","confuses bluntness with honesty","takes insults to their family personally","abandons plans when bored","assumes authority figures are corrupt","tries to solve emotional problems with gifts","refuses to retreat","becomes reckless when tired","believes luck will fix poor planning");
+  DATA.objectives.push("recover a stolen treaty","escort witnesses to a distant trial","investigate a town where nobody dreams","recover supplies from a monster-infested battlefield","identify a saboteur inside a guild","return a runaway magical creature","break a siege without open battle","explore a newly opened sinkhole","protect a festival from a predicted attack","retrieve a ship lost inland","stop counterfeit healing potions","find the missing heir to a minor house","remove a haunting without harming the spirit","deliver medicine during a blockade","win a contest whose rules are being manipulated");
+  DATA.locations.push("a drowned library","a palace under renovation","a bridge-town suspended over a gorge","an orchard where time runs slowly","a monastery carved into sea cliffs","a battlefield covered in flowers","an abandoned royal menagerie","a frozen ship trapped on land","a market that appears only at dusk","a city sewer converted into a shrine","a quarry exposing impossible ruins","a giant hollow tree settlement","a windmill surrounded by standing stones","a hidden harbor beneath a cemetery","a canyon filled with petrified giants");
+  DATA.villains.push("a celebrated hero hiding a crime","a sentient weapon manipulating its owner","a royal adviser protecting a secret","a healer spreading dependence on a false cure","a smuggler with political protection","an ancient spirit enforcing an outdated oath","a rival adventuring company","a magistrate selling verdicts","a dragon disguised as a patron","a guild leader sabotaging competitors","a prophet causing the events they predict","a collector imprisoning magical beings","a military commander prolonging a conflict","a bard whose songs compel obedience","a noble family acting through hired agents");
+  DATA.complications.push("the party is mistaken for the criminals","the objective moves every sunrise","the only witness refuses to speak publicly","the villain has legal ownership of the target","completing the mission breaks an older agreement","the route is safe only during bad weather","the quest giver disappears","a party member is named in an old prophecy","the reward belongs to someone else","the enemy offers a better explanation","local custom forbids the obvious solution","the target has already been divided into pieces","a festival fills the area with civilians","the map deliberately omits a settlement","the supposed monster is guarding refugees");
+  DATA.rewards.push("a deed to an abandoned tower","a permanent discount with a merchant network","a letter of introduction to a powerful scholar","an intelligent but opinionated map","a minor title and ceremonial weapon","a trained messenger bird","legal immunity for one past offense","a parcel of productive farmland","access to a teleportation circle","a chest of rare crafting materials","the services of a skilled guide","a secret route into the capital","ownership of a small ship","a protective blessing","the truth about a historical mystery");
+  DATA.effects.push("can change its damage type at dawn","reveals tracks left within the last hour","creates a brief wall of wind","lets the bearer speak a command across a battlefield","glows when its owner is being followed","can sever one magical bond each week","strikes with additional force during storms","protects the bearer from being disarmed","leaves harmless sparks shaped like runes","can summon itself from a nearby room","becomes weightless while climbing","allows one missed attack to be repeated each day","deals extra damage to shapechangers","can illuminate invisible creatures","stores the sound of its last strike");
+  DATA.appearances.push("covered in tiny engraved constellations","woven from metallic thread","made of translucent amber","set with a stone that reflects a different room","painted with scenes that change each season","assembled from mismatched antique parts","carved with names in forgotten languages","surrounded by a faint scent of cedar","cold on one side and warm on the other","seemingly ordinary until held","decorated with miniature silver bells","stained by ink that never dries","wrapped in leather from an unknown beast","marked with a maker's seal that moves","shot through with veins of blue light");
+  DATA.powers.push("translates one written language each day","makes a small object temporarily weightless","summons clean drinking water","conceals one page of writing","remembers the route last traveled","creates a silent alarm around a campsite","purifies spoiled food","shows the direction of the nearest settlement","copies a simple nonmagical key","projects a map of the surrounding mile","detects structural weakness","keeps its bearer dry in rain","stores a short spoken message","warms a small room","identifies whether a promise was knowingly broken");
+  DATA.drawbacks.push("will not function underground","demands a new name from every owner","makes nearby clocks run late","causes ink to fade around it","attracts curious cats","repeats the last word spoken nearby","works only after sunset","makes metal objects taste like salt","occasionally swaps two small carried items","cannot be willingly sold","leaves footprints that glow briefly","snores when stored in a closed container","grows heavier after every lie","requires a drop of fresh water each morning","refuses to cross a threshold without permission");
+
+  const professions = ["Guard","Merchant","Scholar","Artisan","Guide","Healer","Courier","Scribe","Hunter","Sailor","Innkeeper","Blacksmith","Herbalist","Cartographer","Librarian","Interpreter","Stablemaster","Cook","Jeweler","Tailor","Priest","Investigator","Dockmaster","Caravan master","Messenger","Miner","Actor","Teacher","Apothecary","Surveyor"];
+  const partyTypes = ["Adventuring Company","Mercenary Band","Holy Order","Exploration Guild","Monster Hunters","Rebel Cell","Mage Circle","Treasure Seekers","Caravan Guard","Scholars' Fellowship","Bounty Hunters","Rescue Company","Diplomatic Escort","Relic Seekers","Border Wardens"];
+  const reputations = ["Reliable professionals","Fearless but destructive","Famous negotiators","Monster specialists","Lucky survivors","Discreet problem-solvers","Protectors of common folk","Scholars with swords","Expensive but effective","Always arrive too late, but finish the job","Known for impossible rescues","Distrusted by nobles","Welcome in frontier towns","Never abandon a contract","Leave every campsite cleaner than they found it"];
+  const atmospheres = ["warm and welcoming","orderly and expensive","crowded with travelers","quiet and discreet","bright and chaotic","favored by locals","tense but professional","old-fashioned and trusted","filled with unusual aromas","busy at all hours","decorated with trophies","understaffed but friendly","formal and hushed","loud enough for private conversation","recently renovated","worn down but spotless","popular with adventurers","avoided by the city watch","known for strict rules","full of regular customers"];
+  const rumors = ["a sealed cellar opens at midnight","one employee is a retired adventurer","a customer pays with coins from a vanished kingdom","a tunnel beneath the building reaches the old wall","the owner has a map they refuse to sell","inventory is being replaced with perfect copies","a ghost leaves warnings","a hidden room hosts private auctions","the business was won in a card game","a noble visits in disguise","one wall is actually a dormant portal","the owner keeps an unpaid royal tab","a monster once worked here peacefully","the basement predates the city","a rival plans to buy the building","the sign changes wording during storms","someone receives letters through the chimney","a famous criminal uses a false name here","the safest room is never rented","the business closes on a date nobody explains"];
+
+  let pendingNpc = null;
+  let questGiverNpc = null;
+  let placeOwnerNpc = null;
+  let placeWorkerNpcs = [];
+  const lockedFields = new Map();
+  const locksFor=()=>{const k=`${game}:${generator}`;if(!lockedFields.has(k))lockedFields.set(k,new Set());return lockedFields.get(k);};
+  let pendingBackstory = null;
+  let characterSheet = {};
+  let supportCharacters = [];
+  let sheetItems = [];
+  let sheetWeapons = [];
+  const sheetLinks = {};
+  const resultCache = new Map();
+  const cacheKey=()=>`${game}:${generator}`;
+  let cardDeck = [];
+  const characterLibraryKey="fantasy-forge:character-library";
+  function loadCharacterLibrary(){try{return JSON.parse(localStorage.getItem(characterLibraryKey)||"[]")}catch{return []}}
+  function saveCharacterLibrary(list){localStorage.setItem(characterLibraryKey,JSON.stringify(list.slice(0,100)));}
+  function abilityModifier(score){return Math.floor((Number(score)-10)/2)}
+  function signed(value){return `${value>=0?"+":""}${value}`}
+  function proficiencyForLevel(level){return 2+Math.floor((Math.max(1,Number(level))-1)/4)}
+  function rollAbility(){const rolls=Array.from({length:4},()=>1+Math.floor(Math.random()*6)).sort((a,b)=>a-b);return rolls.slice(1).reduce((a,b)=>a+b,0)}
+  function libraryEntryFromResult(kind="Character"){return {id:`${Date.now()}-${Math.random().toString(36).slice(2,8)}`,kind,created:new Date().toLocaleString(),data:JSON.parse(JSON.stringify(result))};}
+  function currentSheetIdentity(){const cached=resultCache.get("dnd:Character Sheet")||{};return Object.keys(characterSheet).length?characterSheet:cached;}
+  function libraryResult(){const list=loadCharacterLibrary();return list.length?Object.fromEntries(list.map((entry,i)=>[`Record ${i+1}`,`${entry.kind}: ${entry.data.Name||"Unnamed"} • ${entry.data.Race||entry.data.Category||""} ${entry.data.Class||entry.data.Role||""} • ${entry.created}`])):{Status:"No saved characters, NPCs, or enemies yet"};}
+
+
+  const generatorMap = { dnd:["Character Builder","Character Sheet","Full Character Stats","NPC Stats","Enemy & Monster","Character Library","Quest","Place","Party Name","Weapon","Magic Item"], utilities:["Dice Roller","Card Pull","Number Picker"] };
+  const weaponQuirks = [
+    "hums when undead are nearby",
+    "leaves a faint trail of sparks when swung",
+    "vibrates softly before combat begins",
+    "always returns to its sheath clean",
+    "produces a distant thunderclap when drawn",
+    "whispers the names of foes it has defeated",
+    "becomes warm in moonlight",
+    "glows during storms",
+    "refuses to strike a helpless creature",
+    "rings like a bell when a dragon is nearby",
+    "forms frost along its edge near danger",
+    "points toward its previous owner when balanced",
+    "casts no shadow while unsheathed",
+    "changes its balance to match its wielder",
+    "drips harmless seawater near the coast",
+    "makes nearby flames lean toward it",
+    "rattles inside its sheath when someone lies",
+    "leaves brief glowing marks where it strikes",
+    "cannot be drawn in anger unless its bearer speaks its name",
+    "grows lighter after protecting another person",
+    "echoes with distant battle cries on a critical hit",
+    "develops a new notch after every important victory",
+    "smells faintly of rain before an ambush",
+    "becomes heavier in the hands of a coward",
+    "sings a single clear note when perfectly balanced",
+    "reflects a different sky along its polished surface",
+    "will not remain broken overnight",
+    "always lands point-first when dropped",
+    "faint runes appear after it defeats a magical creature",
+    "makes its wielder's footsteps sound like marching soldiers"
+  ];
+  const itemQuirks = [
+    "smells faintly of cedar",
+    "changes color with the weather",
+    "always feels slightly warm",
+    "leaves a trace of silver dust behind",
+    "attracts small birds",
+    "never gathers dust",
+    "leaves damp footprints after rain",
+    "produces harmless sparks when activated",
+    "changes weight with the phase of the moon",
+    "creates tiny illusory insects",
+    "glows softly while someone nearby is lying",
+    "sounds hollow despite being solid",
+    "quietly repeats the last word spoken near it",
+    "rotates to face north when set down",
+    "becomes translucent at sunrise",
+    "displays a different maker's mark each week",
+    "tastes faintly of mint when touched to the tongue",
+    "casts a shadow shaped like a different object",
+    "makes nearby ink shimmer",
+    "vibrates near a hidden compartment",
+    "briefly smells like smoke when danger approaches",
+    "cannot be stained by ordinary dirt",
+    "produces one drop of clean water each morning",
+    "develops a hairline crack whenever its owner breaks a promise",
+    "feels heavier to anyone using a false name",
+    "makes a soft chime when placed beside another magical item",
+    "occasionally rearranges nearby loose coins",
+    "shows tiny moving clouds across its surface",
+    "becomes cool when pointed toward shelter",
+    "causes written numbers nearby to appear in another script"
+  ];
+  let game = "dnd";
+  let generator = "Character Builder";
+  let result = {};
+  let seedText = "";
+
+  function raceName(race, system="dnd") {
+    const table = system === "dnd" ? DATA.dndNames : DATA.skyrimNames;
+    const pair = table[race];
+    return `${pick(pair[0])} ${pick(pair[1])}`;
+  }
+
+  function transformedName(system, seed, race, style) {
+    if (!seed.trim()) return raceName(race, system);
+    const table = system === "dnd" ? DATA.dndNames : DATA.skyrimNames;
+    const flavor = pick(table[race][0]);
+    const surname = pick(table[race][1]);
+    const words = seed.trim().split(/\s+/);
+    return words.map((word,index) => {
+      const size = style === "Short" ? 3 : style === "Epic" ? 5 : 4;
+      return index === 0 ? `${flavor.slice(0,3)}${word.slice(0,size)}` : `${word.slice(0,size)}${surname.slice(-3)}`;
+    }).join(" ");
+  }
+
+  function currentRaces(){ return game === "dnd" ? DATA.dndRaces : DATA.skyrimRaces; }
+  function currentRoles(){ return game === "dnd" ? DATA.classes : DATA.archetypes; }
+  function roleLabel(){ return game === "dnd" ? "Class" : "Archetype"; }
+
+  function buildControls() {
+    const box = byId("controls");
+    if (generator === "Character Name") {
+      box.innerHTML = `<label class="field wide"><span>Original name / random seed</span><input id="seedInput" value="${seedText}"></label><label class="field"><span>Race</span><select id="raceInput"><option>Random</option>${options(currentRaces())}</select></label><label class="field"><span>${roleLabel()}</span><select id="roleInput"><option>Random</option>${options(currentRoles())}</select></label><label class="field"><span>Style</span><select id="styleInput">${options(DATA.styles)}</select></label><div class="checks"><label><input id="randomRace" type="checkbox"> Random race</label><label><input id="randomClass" type="checkbox"> Random ${roleLabel().toLowerCase()}</label></div>`;
+    } else if (generator === "Character Builder") {
+      box.innerHTML = `<section class="builder-section"><h3>Name Generator</h3><div class="builder-grid"><label class="field"><span>Character type</span><select id="characterMode"><option value="character">Main character</option><option value="npc">Support NPC</option></select></label><label class="field wide"><span>Original name / random seed</span><input id="seedInput" value="${seedText}" placeholder="Optional"></label><label class="field"><span>Race</span><select id="raceInput"><option>Random</option>${options(DATA.dndRaces)}</select></label><label class="field"><span>Class</span><select id="classInput"><option>Random</option>${options(DATA.classes)}</select></label><label class="field"><span>Level</span><input id="characterLevel" type="number" min="1" max="20" value="1"></label><label class="field"><span>Name style</span><select id="styleInput">${options(DATA.styles)}</select></label><div class="checks"><label><input id="randomRace" type="checkbox"> Random race</label><label><input id="randomClass" type="checkbox"> Random class</label><label><input id="randomLevel" type="checkbox"> Random level</label></div></div></section><section class="builder-section"><h3>Backstory Generator</h3><div class="builder-grid"><label class="field"><span>Backstory style</span><select id="backstoryStyle"><option value="balanced">Balanced</option><option value="heroic">Heroic</option><option value="tragic">Tragic</option><option value="mysterious">Mysterious</option><option value="humble">Humble</option></select></label><div class="checks"><label><input id="randomBackstoryStyle" type="checkbox"> Random backstory style</label></div><div class="utility-note">Generate All creates the name and complete backstory together. Output fields still support reroll and lock.</div></div></section>`;
+      setTimeout(()=>{const mode=byId("characterMode");if(mode)mode.addEventListener("change",()=>{if(result&&Object.keys(result).length)result.Mode=mode.value==="npc"?"Support NPC":"Main Character";updateSheetActionButton();});},0);
+    } else if (generator === "Full Character Stats") {
+      const identity=currentSheetIdentity(),baseName=identity.Name||"";
+      box.innerHTML = `<label class="field wide"><span>Character name</span><input id="fullName" value="${baseName}"></label><label class="field"><span>Race</span><select id="fullRace"><option>Random</option>${options(DATA.dndRaces)}</select></label><label class="field"><span>Class</span><select id="fullClass"><option>Random</option>${options(DATA.classes)}</select></label><label class="field"><span>Level</span><input id="fullLevel" type="number" min="1" max="20" value="${identity.Level||1}"></label><label class="field"><span>Background</span><select id="fullBackground">${options(["Acolyte","Artisan","Charlatan","Criminal","Entertainer","Folk Hero","Hermit","Noble","Outlander","Sage","Sailor","Soldier","Urchin"])}</select></label><label class="field"><span>Alignment</span><select id="fullAlignment">${options(["Lawful Good","Neutral Good","Chaotic Good","Lawful Neutral","Neutral","Chaotic Neutral","Lawful Evil","Neutral Evil","Chaotic Evil"])}</select></label><div class="checks"><label><input id="fullRandomRace" type="checkbox" checked> Random race</label><label><input id="fullRandomClass" type="checkbox" checked> Random class</label><label><input id="fullRandomLevel" type="checkbox"> Random level</label><label><input id="fullRollStats" type="checkbox" checked> Roll ability scores</label><label><input id="fullUseCurrent" type="checkbox" checked> Use current Character Sheet identity when available</label></div><div class="utility-note">When Use current Character Sheet identity is enabled, Name, Race, Class, and Level come from the current or cached Character Sheet and the random identity checkboxes are ignored.</div><div class="utility-note">Creates a complete playable stat record with ability scores, modifiers, proficiency, combat statistics, saves, skills, equipment summary, traits, and spellcasting notes. Use Save to Library to retain multiple characters.</div>`;
+      setTimeout(()=>{const use=byId("fullUseCurrent"),sync=()=>{const identity=currentSheetIdentity(),on=use.checked;if(on){if(identity.Name)byId("fullName").value=identity.Name;if(identity.Race)byId("fullRace").value=identity.Race;if(identity.Class)byId("fullClass").value=identity.Class;if(identity.Level)byId("fullLevel").value=identity.Level;}["fullName","fullRace","fullClass","fullLevel","fullRandomRace","fullRandomClass","fullRandomLevel"].forEach(id=>{const el=byId(id);if(el)el.disabled=on;});};if(use){use.addEventListener("change",sync);sync();}},0);
+    } else if (generator === "NPC Stats") {
+      box.innerHTML = `<label class="field"><span>NPC role</span><select id="npcRole">${options(["Commoner","Guard","Scout","Bandit","Veteran","Acolyte","Mage","Priest","Assassin","Noble","Merchant","Artisan"])}</select></label><label class="field"><span>Race</span><select id="npcStatsRace"><option>Random</option>${options(DATA.dndRaces)}</select></label><label class="field"><span>Level / tier</span><input id="npcStatsLevel" type="number" min="1" max="20" value="3"></label><div class="checks"><label><input id="randomNpcRole" type="checkbox"> Random NPC role</label><label><input id="randomNpcRace" type="checkbox" checked> Random race</label><label><input id="randomNpcLevel" type="checkbox"> Random level</label><label><input id="npcUseBuilder" type="checkbox" checked> Use current Support NPC when available</label></div>`;
+    } else if (generator === "Enemy & Monster") {
+      box.innerHTML = `<label class="field"><span>Category</span><select id="enemyCategory">${options(["Humanoid","Beast","Undead","Fiend","Dragon","Aberration","Construct","Monstrosity","Elemental","Fey","Giant","Ooze","Plant"])}</select></label><label class="field"><span>Combat role</span><select id="enemyRole">${options(["Minion","Skirmisher","Brute","Controller","Artillery","Leader","Solo Boss"])}</select></label><label class="field"><span>Size</span><select id="enemySize">${options(["Tiny","Small","Medium","Large","Huge","Gargantuan"])}</select></label><label class="field"><span>Terrain</span><select id="enemyTerrain">${options(["Dungeon","Forest","Mountain","Swamp","Urban","Desert","Coast","Underdark","Arctic","Grassland","Planar"])}</select></label><label class="field"><span>Challenge tier</span><select id="enemyTier">${options(["Low","Standard","High","Boss"])} </select></label><div class="checks"><label><input id="randomEnemyCategory" type="checkbox" checked> Random category</label><label><input id="randomEnemyRole" type="checkbox" checked> Random role</label><label><input id="randomEnemySize" type="checkbox" checked> Random size</label><label><input id="randomEnemyTerrain" type="checkbox" checked> Random terrain</label><label><input id="randomEnemyTier" type="checkbox"> Random tier</label></div>`;
+    } else if (generator === "Character Library") {
+      box.innerHTML = `<div class="utility-note">Saved characters, NPC stat blocks, and enemies are stored locally in this browser. Open a record to restore it into the matching generator, or remove it from the library.</div><button id="clearCharacterLibrary" class="secondary-button" type="button">Clear character library</button>`;
+      setTimeout(()=>{const b=byId("clearCharacterLibrary");if(b)b.onclick=()=>{localStorage.removeItem(characterLibraryKey);resultCache.delete("dnd:Character Library");result=libraryResult();render();}},0);
+    } else if (generator === "Character Sheet") {
+      box.innerHTML = `<label class="field"><span>Race</span><select id="sheetRace"><option>Random</option>${options(DATA.dndRaces)}</select></label><label class="field"><span>Class</span><select id="sheetClass"><option>Random</option>${options(DATA.classes)}</select></label><label class="field"><span>Level</span><input id="sheetLevel" type="number" min="1" max="20" value="1"></label><div class="checks"><label><input id="sheetRandomRace" type="checkbox" checked> Random race</label><label><input id="sheetRandomClass" type="checkbox" checked> Random class</label><label><input id="sheetRandomLevel" type="checkbox"> Random level</label><label><input id="sheetAddWeapon" type="checkbox" checked> Include weapon</label><label><input id="sheetAddItem" type="checkbox" checked> Include magic item</label><label><input id="sheetAddParty" type="checkbox" checked> Include party</label><label><input id="sheetAddHome" type="checkbox" checked> Include home</label><label><input id="sheetAddQuest" type="checkbox" checked> Include quest</label></div><div class="utility-note">Generate All creates a complete character sheet from scratch. You can still lock individual output fields before generating again.</div><button id="clearCharacterSheet" class="secondary-button" type="button">Clear character sheet</button>`;
+      setTimeout(()=>{const b=byId("clearCharacterSheet");if(b)b.onclick=()=>{characterSheet={};supportCharacters=[];sheetItems=[];sheetWeapons=[];Object.keys(sheetLinks).forEach(k=>delete sheetLinks[k]);result={Status:"Character sheet cleared"};render();}},0);
+    } else if (generator === "Backstory" || generator === "NPC") {
+      box.innerHTML = `<label class="field"><span>Race</span><select id="raceInput"><option>Random</option>${options(DATA.dndRaces)}</select></label><label class="field"><span>Class</span><select id="classInput"><option>Random</option>${options(DATA.classes)}</select></label><div class="checks"><label><input id="randomRace" type="checkbox"> Random race</label><label><input id="randomClass" type="checkbox"> Random class</label></div>${generator==="NPC"?'<div class="utility-note">Use the lock buttons on result fields to preserve them when you click Generate all.</div>':''}`;
+    } else if (generator === "Place") {
+      box.innerHTML = `<label class="field"><span>Place type</span><select id="placeType"><option>Random</option>${options(Object.keys(DATA.places))}</select></label><label class="field"><span>Total staff</span><select id="staffCount">${options([1,2,3,4])}</select></label><div class="checks"><label><input id="randomPlaceType" type="checkbox"> Random place type</label></div>`;
+    } else if (generator === "Weapon") {
+      box.innerHTML = `<label class="field"><span>Weapon type</span><select id="weaponType"><option>Random</option>${options(DATA.weaponTypes)}</select></label><div class="checks"><label><input id="randomWeaponType" type="checkbox"> Random weapon type</label></div>`;
+    } else if (generator === "Magic Item") {
+      box.innerHTML = `<label class="field"><span>Item type</span><select id="itemType"><option>Random</option>${options(["Wondrous Item","Ring","Wand","Armor","Potion","Scroll","Charm","Instrument","Tool","Rod","Staff","Clothing","Container"])}</select></label><div class="checks"><label><input id="randomItemType" type="checkbox"> Random item type</label></div>`;
+    } else if (generator === "Dice Roller") {
+      box.innerHTML = `<label class="field"><span>Number of dice</span><input id="diceCount" type="number" min="1" max="100" value="1"></label><label class="field"><span>Die size</span><select id="diceSize">${options([4,6,8,10,12,20,100].map(n=>`d${n}`))}</select></label><label class="field"><span>Modifier</span><input id="diceModifier" type="number" value="0"></label>`;
+    } else if (generator === "Card Pull") {
+      box.innerHTML = `<label class="field"><span>Cards to draw</span><input id="cardCount" type="number" min="1" max="54" value="1"></label><label class="field"><span>Deck</span><select id="deckType"><option value="standard">Standard 52-card deck</option><option value="jokers">54-card deck with Jokers</option></select></label><label class="field"><span>Draw mode</span><select id="cardMode"><option value="remaining">Draw from remaining deck</option><option value="replace">Replace after each draw</option></select></label><button id="resetDeck" class="secondary-button" type="button">Shuffle / reset deck</button>`;
+      setTimeout(()=>{const b=byId("resetDeck");if(b)b.onclick=()=>{const j=byId("deckType")?.value==="jokers";cardDeck=fullDeck(j);result={Draw:"Deck shuffled",Deck:j?"54 cards with Jokers":"Standard 52 cards",Mode:byId("cardMode")?.value==="replace"?"With replacement":"Without replacement",Remaining:String(cardDeck.length)};render();}},0);
+    } else if (generator === "Number Picker") {
+      box.innerHTML = `<label class="field"><span>Minimum</span><input id="numberMin" type="number" value="1"></label><label class="field"><span>Maximum</span><input id="numberMax" type="number" value="100"></label><label class="field"><span>How many numbers</span><input id="numberCount" type="number" min="1" max="100" value="1"></label><label class="checks"><input id="uniqueNumbers" type="checkbox"> Unique results</label>`;
+    } else box.innerHTML = "";
+  }
+
+  function selected(id, list) {
+    const el=byId(id);
+    const randomBox=id==="raceInput"?byId("randomRace"):id==="roleInput"||id==="classInput"?byId("randomClass"):id==="placeType"?byId("randomPlaceType"):null;
+    return !el || el.value==="Random" || (randomBox&&randomBox.checked) ? pick(list) : el.value;
+  }
+
+  function makeNpc(base={}) {
+    const race = base.Race || selected("raceInput", DATA.dndRaces);
+    return { Name:base.Name || raceName(race), Race:race, Class:base.Class || selected("classInput",DATA.classes), Level:base.Level || String(Math.floor(Math.random()*15)+1), Profession:base.Profession || pick(professions), Trait:pick(DATA.traits), Origin:pick(DATA.origins), Goal:pick(DATA.goals), Secret:pick(DATA.secrets), Fear:pick(DATA.fears), Flaw:pick(DATA.flaws) };
+  }
+
+  function openNpc(person) {
+    saveCurrentFavorite();
+    game="dnd";
+    document.querySelectorAll(".tab").forEach(tab=>tab.classList.toggle("active",tab.dataset.game==="dnd"));
+    byId("generatorType").innerHTML=options(generatorMap.dnd);
+    generator="Character Builder";
+    byId("generatorType").value=generator;
+    buildControls();
+    byId("characterMode").value="npc";
+    if(person.Race)byId("raceInput").value=person.Race;
+    if(person.Class)byId("classInput").value=person.Class;
+    if(person.Level)byId("characterLevel").value=person.Level;
+    result={...person,Mode:"Support NPC",Seed:person.Seed||"Race-generated"};
+    resultCache.set(cacheKey(),JSON.parse(JSON.stringify(result)));
+    renderGeneratorTabs();
+    render();
+    window.scrollTo({top:0,behavior:"smooth"});
+  }
+
+  function fullDeck(j=false){const d=["♠","♥","♦","♣"].flatMap(s=>["A","2","3","4","5","6","7","8","9","10","J","Q","K"].map(r=>`${r}${s}`));if(j)d.push("Red Joker","Black Joker");return d;}
+  function generateAll() {
+    const preserved={...result},activeLocks=locksFor();
+    if (generator === "Character Builder") {
+      const mode=byId("characterMode").value;
+      seedText=byId("seedInput").value.trim();
+      const race=selected("raceInput",DATA.dndRaces);
+      const cls=selected("classInput",DATA.classes);
+      const level=String(byId("randomLevel").checked?Math.floor(Math.random()*20)+1:Math.max(1,Math.min(20,+byId("characterLevel").value||1)));
+      const style=byId("styleInput").value,styles=["balanced","heroic","tragic","mysterious","humble"];
+      const backstoryStyle=byId("randomBackstoryStyle").checked?pick(styles):byId("backstoryStyle").value;
+      const name=seedText?transformedName("dnd",seedText,race,style):raceName(race);
+      const npc=makeNpc({Name:name,Race:race,Class:cls,Level:level});
+      const openings={balanced:`Born in ${npc.Origin}`,heroic:`Rising from ${npc.Origin} with uncommon courage`,tragic:`After enduring a painful loss in ${npc.Origin}`,mysterious:`With few willing to speak of their early life in ${npc.Origin}`,humble:`Raised among ordinary people in ${npc.Origin}`};
+      const backstory=`${openings[backstoryStyle]}, ${name} became known as someone ${npc.Trait}. Their driving purpose is to ${npc.Goal}. They secretly ${npc.Secret}, fear ${npc.Fear}, and often struggle because they ${npc.Flaw}.`;
+      result={Name:name,Mode:mode==="npc"?"Support NPC":"Main Character",Seed:seedText||"Race-generated",Race:race,Class:cls,Level:level,"Backstory Style":backstoryStyle[0].toUpperCase()+backstoryStyle.slice(1),Backstory:backstory,Origin:npc.Origin,Goal:npc.Goal,Trait:npc.Trait,Secret:npc.Secret,Fear:npc.Fear,Flaw:npc.Flaw};
+      if(mode==="npc")result.Profession=npc.Profession;
+      byId("raceInput").value=race;
+      byId("classInput").value=cls;
+    } else if (generator === "Full Character Stats") {
+      const useCurrent=byId("fullUseCurrent")?.checked,identity=currentSheetIdentity();
+      const level=useCurrent&&identity.Level?Math.max(1,Math.min(20,+identity.Level||1)):(byId("fullRandomLevel")?.checked?1+Math.floor(Math.random()*20):Math.max(1,Math.min(20,+byId("fullLevel").value||1)));
+      const race=useCurrent&&identity.Race?identity.Race:(byId("fullRandomRace")?.checked?pick(DATA.dndRaces):byId("fullRace").value==="Random"?pick(DATA.dndRaces):byId("fullRace").value);
+      const cls=useCurrent&&identity.Class?identity.Class:(byId("fullRandomClass")?.checked?pick(DATA.classes):byId("fullClass").value==="Random"?pick(DATA.classes):byId("fullClass").value);
+      const name=(useCurrent&&identity.Name)||byId("fullName").value.trim()||raceName(race);
+      const scores={Strength:rollAbility(),Dexterity:rollAbility(),Constitution:rollAbility(),Intelligence:rollAbility(),Wisdom:rollAbility(),Charisma:rollAbility()};
+      const pb=proficiencyForLevel(level), hitDie={Barbarian:12,Fighter:10,Paladin:10,Ranger:10,Bard:8,Cleric:8,Druid:8,Monk:8,Rogue:8,Warlock:8,Sorcerer:6,Wizard:6}[cls]||8;
+      const hp=Math.max(1,hitDie+abilityModifier(scores.Constitution)+(level-1)*(Math.floor(hitDie/2)+1+abilityModifier(scores.Constitution)));
+      const spellcasters=["Bard","Cleric","Druid","Sorcerer","Warlock","Wizard","Paladin","Ranger"];
+      result={Name:name,Race:race,Class:cls,Level:String(level),Background:byId("fullBackground").value,Alignment:byId("fullAlignment").value,...scores,"Ability Modifiers":Object.entries(scores).map(([k,v])=>`${k.slice(0,3).toUpperCase()} ${signed(abilityModifier(v))}`).join(", "),"Proficiency Bonus":signed(pb),"Armor Class":String(10+abilityModifier(scores.Dexterity)),"Hit Points":String(hp),"Hit Dice":`${level}d${hitDie}`,Initiative:signed(abilityModifier(scores.Dexterity)),Speed:"30 ft.","Passive Perception":String(10+abilityModifier(scores.Wisdom)),"Saving Throws":Object.entries(scores).map(([k,v])=>`${k.slice(0,3).toUpperCase()} ${signed(abilityModifier(v))}`).join(", "),Skills:"Choose class and background proficiencies; apply proficiency bonus where trained",Languages:"Common plus ancestry and background languages",Weapons:characterSheet.Weapons||"Add weapons from the Weapon generator",Items:characterSheet["Magic Items"]||"Add items from the Magic Item generator",Features:"Record ancestry, class, subclass, background, and feat features",Spellcasting:spellcasters.includes(cls)?`Spellcasting class. Record spell ability, save DC ${8+pb+Math.max(abilityModifier(scores.Intelligence),abilityModifier(scores.Wisdom),abilityModifier(scores.Charisma))}, attack bonus, slots, and prepared/known spells.`:"No default spellcasting; record granted spells if applicable.",Backstory:characterSheet.Backstory||"Use Character Builder to generate and add a backstory",Notes:"Track current HP, temporary HP, death saves, inspiration, conditions, currency, inventory, and experience here."};
+    } else if (generator === "NPC Stats") {
+      const roles=["Commoner","Guard","Scout","Bandit","Veteran","Acolyte","Mage","Priest","Assassin","Noble","Merchant","Artisan"],role=byId("randomNpcRole")?.checked?pick(roles):byId("npcRole").value;
+      const race=byId("randomNpcRace")?.checked?pick(DATA.dndRaces):(byId("npcStatsRace").value==="Random"?pick(DATA.dndRaces):byId("npcStatsRace").value);
+      const level=byId("randomNpcLevel")?.checked?1+Math.floor(Math.random()*12):Math.max(1,Math.min(20,+byId("npcStatsLevel").value||1));
+      const scores={Strength:rollAbility(),Dexterity:rollAbility(),Constitution:rollAbility(),Intelligence:rollAbility(),Wisdom:rollAbility(),Charisma:rollAbility()},pb=proficiencyForLevel(level);
+      const linked=byId("npcUseBuilder")?.checked&&resultCache.get("dnd:Character Builder")?.Mode==="Support NPC"?resultCache.get("dnd:Character Builder"):null;
+      result={Name:linked?.Name||raceName(race),Race:linked?.Race||race,Role:linked?.Profession||role,Level:String(linked?.Level||level),...scores,"Armor Class":String(10+abilityModifier(scores.Dexterity)+(role==="Guard"||role==="Veteran"?4:0)),"Hit Points":String(Math.max(4,6+abilityModifier(scores.Constitution)+(level-1)*(4+abilityModifier(scores.Constitution)))),Speed:"30 ft.","Proficiency Bonus":signed(pb),"Primary Attack":`${pick(["Blade","Club","Bow","Spear","Spell","Claw"])} ${signed(pb+Math.max(abilityModifier(scores.Strength),abilityModifier(scores.Dexterity)))} to hit`,Skills:pick(["Perception, Insight","Stealth, Survival","Athletics, Intimidation","Arcana, History","Persuasion, Deception"]),Trait:linked?.Trait||pick(DATA.traits),Goal:linked?.Goal||pick(DATA.goals),Secret:linked?.Secret||pick(DATA.secrets)};
+    } else if (generator === "Enemy & Monster") {
+      const cats=["Humanoid","Beast","Undead","Fiend","Dragon","Aberration","Construct","Monstrosity","Elemental","Fey","Giant","Ooze","Plant"],roles=["Minion","Skirmisher","Brute","Controller","Artillery","Leader","Solo Boss"],sizes=["Tiny","Small","Medium","Large","Huge","Gargantuan"],terrains=["Dungeon","Forest","Mountain","Swamp","Urban","Desert","Coast","Underdark","Arctic","Grassland","Planar"],tiers=["Low","Standard","High","Boss"];
+      const val=(id,box,list)=>byId(box)?.checked?pick(list):byId(id).value,category=val("enemyCategory","randomEnemyCategory",cats),role=val("enemyRole","randomEnemyRole",roles),size=val("enemySize","randomEnemySize",sizes),terrain=val("enemyTerrain","randomEnemyTerrain",terrains),tier=val("enemyTier","randomEnemyTier",tiers),scale={Low:.75,Standard:1,High:1.35,Boss:1.8}[tier];
+      const scores={Strength:8+Math.floor(Math.random()*13),Dexterity:8+Math.floor(Math.random()*13),Constitution:8+Math.floor(Math.random()*13),Intelligence:4+Math.floor(Math.random()*15),Wisdom:6+Math.floor(Math.random()*15),Charisma:4+Math.floor(Math.random()*15)},pb=Math.max(2,Math.round(2+scale*2));
+      result={Name:`${pick(["Ashfang","Gravebound","Ironhide","Nightglass","Cinder","Hollow","Storm","Bloodroot"])} ${pick(["Marauder","Knight","Witch","Brute","Stalker","Drake","Devourer","Sentinel"])}`,Category:category,Role:role,Size:size,Terrain:terrain,Tier:tier,...scores,"Armor Class":String(Math.round(11+Math.random()*6+(tier==="Boss"?2:0))),"Hit Points":String(Math.round((18+Math.random()*65)*scale)),Speed:pick(["25 ft.","30 ft.","40 ft.","30 ft., fly 40 ft.","30 ft., swim 30 ft."]),"Proficiency Bonus":signed(pb),"Saving Throws":Object.entries(scores).slice(0,3).map(([k,v])=>`${k.slice(0,3).toUpperCase()} ${signed(abilityModifier(v)+pb)}`).join(", "),Senses:pick(["darkvision 60 ft.","blindsight 30 ft.","tremorsense 30 ft.","passive Perception 12"]),Resistances:pick(["None","Cold","Fire","Lightning","Necrotic","Nonmagical physical damage"]),"Primary Attack":`${pick(["Claw","Bite","Blade","Bolt","Slam","Hex"])}: ${signed(pb+3)} to hit, ${Math.max(3,Math.round(7*scale))} damage`,"Special Ability":pick(["Frightening aura","Short-range teleport","Regeneration while bloodied","Reactive counterattack","Area burst attack","Command a nearby ally"]),Tactics:pick(["Focuses isolated targets","Protects weaker allies","Controls chokepoints","Attacks from range then retreats","Uses terrain aggressively"]),Loot:pick(["Coins and a minor trinket","Monster components","A map fragment","A damaged magic item","Nothing of value"])};
+    } else if (generator === "Character Library") {
+      result=libraryResult();
+    } else if (generator === "Character Sheet") {
+      const rr=byId("sheetRandomRace")?.checked,rc=byId("sheetRandomClass")?.checked,rl=byId("sheetRandomLevel")?.checked;
+      const race=rr?pick(DATA.dndRaces):(byId("sheetRace")?.value==="Random"?pick(DATA.dndRaces):byId("sheetRace")?.value||pick(DATA.dndRaces));
+      const cls=rc?pick(DATA.classes):(byId("sheetClass")?.value==="Random"?pick(DATA.classes):byId("sheetClass")?.value||pick(DATA.classes));
+      const level=String(rl?Math.floor(Math.random()*20)+1:Math.max(1,Math.min(20,+byId("sheetLevel")?.value||1)));
+      characterSheet={Name:raceName(race),Race:race,Class:cls,Level:level,Origin:pick(DATA.origins),Goal:pick(DATA.goals),Trait:pick(DATA.traits),Secret:pick(DATA.secrets),Fear:pick(DATA.fears),Flaw:pick(DATA.flaws)};
+      Object.keys(sheetLinks).forEach(k=>delete sheetLinks[k]);sheetItems=[];
+      if(byId("sheetAddWeapon")?.checked){const wt=pick(DATA.weaponTypes),w={Name:pick(DATA.weaponNames[wt]),Type:wt,Rarity:pick(DATA.rarities),Effect:pick(DATA.effects),Quirk:pick(weaponQuirks),History:pick(DATA.origins)};sheetWeapons=[w];characterSheet.Weapons=sheetWeapons.map((x,n)=>`${n+1}. ${x.Name} (${x.Type||"Weapon"})`).join("\n");}
+      if(byId("sheetAddItem")?.checked){const i={Name:`${pick(DATA.placeAdjectives)} ${pick(DATA.itemForms)}`,Type:pick(["Wondrous Item","Ring","Wand","Armor","Potion","Scroll","Charm","Instrument","Tool"]),Rarity:pick(DATA.rarities),Appearance:pick(DATA.appearances),Power:pick(DATA.powers),Quirk:pick(itemQuirks),Drawback:pick(DATA.drawbacks),Origin:pick(DATA.origins)};sheetItems=[i];characterSheet["Magic Items"]=sheetItems.map((x,n)=>`${n+1}. ${x.Name} (${x.Type})`).join("\n");}
+      if(byId("sheetAddParty")?.checked){const party={Name:`The ${pick(DATA.partyA)} ${pick(DATA.partyN)}`,Type:pick(partyTypes),Motto:pick(DATA.mottos),Reputation:pick(reputations)};characterSheet.Party=party.Name;sheetLinks.Party={generator:"Party Name",result:party};}
+      if(byId("sheetAddHome")?.checked){const type=pick(Object.keys(DATA.places)),d=DATA.places[type],place={Name:`The ${pick(DATA.placeAdjectives)} ${pick(d.nouns)}`,Type:type,Specialty:pick(d.specialties),Atmosphere:pick(atmospheres),Rumor:pick(rumors)};characterSheet.Home=place.Name;sheetLinks.Home={generator:"Place",result:place};}
+      if(byId("sheetAddQuest")?.checked){const q={Name:`The ${pick(DATA.partyA)} ${pick(["Relic","Oath","Vault","Crown","Road","Shadow"])}`,Objective:pick(DATA.objectives),Location:pick(DATA.locations),Villain:pick(DATA.villains),Complication:pick(DATA.complications),Reward:pick(DATA.rewards)};characterSheet["Current Quest"]=q.Name;sheetLinks["Current Quest"]={generator:"Quest",result:q};}
+      if(supportCharacters.length)characterSheet["Support Characters"]=supportCharacters.map((p,i)=>`${i+1}. ${p.Name||"Unnamed"} • ${p.Race||"Unknown race"} • ${p.Class||p.Profession||"Support"}`).join("\n");
+      characterSheet["Full Stats Link"]="Open Full Character Stats from the action button to build the complete playable sheet";
+      result={...characterSheet};
+    } else if (generator === "Character Name") {
+      seedText = byId("seedInput").value.trim() || seedText;
+      const race = selected("raceInput",currentRaces());
+      const role = selected("roleInput",currentRoles());
+      const style = byId("styleInput").value;
+      const previous={...result};result = { Name:transformedName(game,seedText,race,style), Seed:seedText || "Race-generated", Race:race, [roleLabel()]:role, Style:style };locksFor().forEach(k=>{if(previous[k]!==undefined)result[k]=previous[k];});
+      byId("raceInput").value=result.Race; byId("roleInput").value=result[roleLabel()];
+    } else if (generator === "Backstory") {
+      const race=pendingBackstory?.Race||selected("raceInput",DATA.dndRaces); result={Name:pendingBackstory?.Name||raceName(race),Race:race,Class:pendingBackstory?.Class||selected("classInput",DATA.classes),Origin:pick(DATA.origins),Goal:pick(DATA.goals),Trait:pick(DATA.traits),Secret:pick(DATA.secrets),Fear:pick(DATA.fears),Flaw:pick(DATA.flaws)};pendingBackstory=null;if(byId("raceInput"))byId("raceInput").value=result.Race;if(byId("classInput"))byId("classInput").value=result.Class;
+    } else if (generator === "NPC") {
+      const fresh=pendingNpc?{...pendingNpc}:makeNpc(); pendingNpc=null;
+      const old={...result}; result=fresh;
+      locksFor().forEach(key=>{if(old[key]!==undefined)result[key]=old[key];});
+      if(byId("raceInput"))byId("raceInput").value=result.Race;
+      if(byId("classInput"))byId("classInput").value=result.Class;
+    } else if (generator === "Quest") {
+      questGiverNpc=makeNpc(); result={Name:`The ${pick(DATA.partyA)} ${pick(["Relic","Oath","Vault","Crown","Road","Shadow","Bell","Key","Ember","Promise","Star","Thorn"])}`,Objective:pick(DATA.objectives),Location:pick(DATA.locations),Villain:pick(DATA.villains),Complication:pick(DATA.complications),Reward:pick(DATA.rewards),"Quest giver":`${questGiverNpc.Name} • ${questGiverNpc.Profession}`};
+    } else if (generator === "Place") {
+      const type=selected("placeType",Object.keys(DATA.places)),data=DATA.places[type],staff=Number(byId("staffCount").value); byId("placeType").value=type;
+      placeOwnerNpc=makeNpc({Profession:data.workers[0]}); placeWorkerNpcs=Array.from({length:Math.max(0,staff-1)},(_,i)=>makeNpc({Profession:data.workers[(i+1)%data.workers.length]}));
+      result={Name:`The ${pick(DATA.placeAdjectives)} ${pick(data.nouns)}`,Type:type,Specialty:pick(data.specialties),Atmosphere:pick(atmospheres),Rumor:pick(rumors),Owner:`${placeOwnerNpc.Name} • ${placeOwnerNpc.Profession}`,Workers:placeWorkerNpcs.map(p=>`${p.Name} • ${p.Profession}`).join("\n")||"None"};
+    } else if (generator === "Party Name") result={Name:`The ${pick(DATA.partyA)} ${pick(DATA.partyN)}`,Type:pick(partyTypes),Motto:pick(DATA.mottos),Reputation:pick(reputations)};
+    else if (generator === "Weapon") {const previous={...result},type=byId("randomWeaponType")?.checked?pick(DATA.weaponTypes):selected("weaponType",DATA.weaponTypes);result={Name:pick(DATA.weaponNames[type]),Type:type,[game==="skyrim"?"Material":"Rarity"]:pick(game==="skyrim"?DATA.materials:DATA.rarities),Effect:pick(DATA.effects),Quirk:pick(weaponQuirks),History:pick(DATA.origins)};locksFor().forEach(k=>{if(previous[k]!==undefined)result[k]=previous[k];});byId("weaponType").value=result.Type;}
+    else if (generator === "Magic Item") {const itemTypes=["Wondrous Item","Ring","Wand","Armor","Potion","Scroll","Charm","Instrument","Tool","Rod","Staff","Clothing","Container"],itemType=byId("randomItemType")?.checked?pick(itemTypes):selected("itemType",itemTypes);result={Name:`${pick(DATA.placeAdjectives)} ${pick(DATA.itemForms)}`,Type:itemType,Rarity:pick(DATA.rarities),Appearance:pick(DATA.appearances),Power:pick(DATA.powers),Quirk:pick(itemQuirks),Drawback:pick(DATA.drawbacks),Origin:pick(DATA.origins)};byId("itemType").value=itemType;}
+    else if(generator==="Dice Roller") {const count=Math.max(1,+byId("diceCount").value||1),size=+byId("diceSize").value.slice(1),mod=+byId("diceModifier").value||0,rolls=Array.from({length:count},()=>Math.floor(Math.random()*size)+1);result={Roll:`${count}d${size}${mod?mod>0?` + ${mod}`:` - ${Math.abs(mod)}`:""}`,Dice:rolls.join(", "),Modifier:String(mod),Total:String(rolls.reduce((a,b)=>a+b,0)+mod)};}
+    else if(generator==="Card Pull") {const count=Math.max(1,Math.min(54,+byId("cardCount").value||1)),j=byId("deckType").value==="jokers",replace=byId("cardMode").value==="replace",size=j?54:52;if(!cardDeck.length||cardDeck.some(c=>c.includes("Joker"))!==j)cardDeck=fullDeck(j);const pulls=[];for(let i=0;i<count;i++){if(!cardDeck.length)cardDeck=fullDeck(j);const x=Math.floor(Math.random()*cardDeck.length);pulls.push(cardDeck[x]);if(!replace)cardDeck.splice(x,1);}result={Draw:pulls.join(", "),Deck:j?"54 cards with Jokers":"Standard 52 cards",Mode:replace?"With replacement":"Without replacement",Remaining:String(replace?size:cardDeck.length)};}
+    else if(generator==="Number Picker") {let min=+byId("numberMin").value,max=+byId("numberMax").value;if(min>max)[min,max]=[max,min];const count=Math.max(1,+byId("numberCount").value||1),unique=byId("uniqueNumbers").checked,pool=Array.from({length:max-min+1},(_,i)=>i+min),nums=[];for(let i=0;i<count;i++){if(unique&&!pool.length)break;const idx=Math.floor(Math.random()*(unique?pool.length:max-min+1));nums.push(unique?pool.splice(idx,1)[0]:min+idx);}result={Range:`${min} to ${max}`,Count:String(nums.length),Unique:unique?"Yes":"No",Result:nums.join(", ")};}
+    activeLocks.forEach(k=>{if(preserved[k]!==undefined)result[k]=preserved[k];});
+    render();
+  }
+  function rerollField(key){
+    if(locksFor().has(key)){render();return;}
+    if(generator==="Character Name"){if(locksFor().has(key)){render();return;}if(key==="Seed"){seedText=`${pick(DATA.dndNames.Human[0])} ${pick(DATA.dndNames.Human[1])}`;result.Seed=seedText;byId("seedInput").value=seedText;}if(key==="Race")result.Race=pick(currentRaces());if(key==="Class")result.Class=pick(DATA.classes);if(key==="Archetype")result.Archetype=pick(DATA.archetypes);if(!locksFor().has("Name")&&(key==="Name"||key==="Race"||key==="Seed"))result.Name=transformedName(game,seedText,result.Race,result.Style);byId("raceInput").value=result.Race;byId("roleInput").value=result[roleLabel()];}
+    else if(generator==="Place"&&key==="Type"){const nt=pick(Object.keys(DATA.places)),d=DATA.places[nt];result.Type=nt;result.Name=`The ${pick(DATA.placeAdjectives)} ${pick(d.nouns)}`;result.Specialty=pick(d.specialties);placeOwnerNpc=makeNpc({Profession:d.workers[0]});placeWorkerNpcs=placeWorkerNpcs.map((_,i)=>makeNpc({Profession:d.workers[(i+1)%d.workers.length]}));result.Owner=`${placeOwnerNpc.Name} • ${placeOwnerNpc.Profession}`;result.Workers=placeWorkerNpcs.map(p=>`${p.Name} • ${p.Profession}`).join("\n")||"None";byId("placeType").value=nt;}
+    else if(generator==="Place"&&key==="Owner"){placeOwnerNpc=makeNpc({Profession:DATA.places[result.Type].workers[0]});result.Owner=`${placeOwnerNpc.Name} • ${placeOwnerNpc.Profession}`;}
+    else if(generator==="Place"&&key==="Workers"){const rs=DATA.places[result.Type].workers;placeWorkerNpcs=placeWorkerNpcs.map((_,i)=>makeNpc({Profession:rs[(i+1)%rs.length]}));result.Workers=placeWorkerNpcs.map(p=>`${p.Name} • ${p.Profession}`).join("\n")||"None";}
+    else if(generator==="Quest"&&key==="Quest giver"){questGiverNpc=makeNpc();result["Quest giver"]=`${questGiverNpc.Name} • ${questGiverNpc.Profession}`;}
+    else if(generator==="Weapon"&&key==="Type"){if(locksFor().has("Type")){render();return;}result.Type=pick(DATA.weaponTypes);byId("weaponType").value=result.Type;if(!locksFor().has("Name"))result.Name=pick(DATA.weaponNames[result.Type]);}
+    else {const old={...result};generateAll();const fresh=result;result=old;result[key]=fresh[key];if((generator==="Backstory"||generator==="NPC")&&key==="Race")result.Name=raceName(result.Race);if((generator==="Backstory"||generator==="NPC")&&key==="Name")result.Name=raceName(result.Race);if(generator==="Weapon"&&(key==="Type"||key==="Name"))result.Name=pick(DATA.weaponNames[result.Type]);}
+    render();
+  }
+
+  function saveCurrentFavorite(){
+    const list=saved(),payload=favoritePayload();
+    if(!list.some(x=>(typeof x==="string"?x:x.text)===payload.text))list.unshift(payload);
+    localStorage.setItem(storageKey(),JSON.stringify(list.slice(0,30)));
+  }
+  function addCurrentToCharacterSheet(){
+    const source=generator;
+    saveCurrentFavorite();
+    if(source==="Character Builder" && result.Mode==="Support NPC"){
+      const npc=JSON.parse(JSON.stringify(result));
+      const signature=`${npc.Name||""}|${npc.Race||""}|${npc.Class||""}|${npc.Profession||""}`;
+      if(!supportCharacters.some(p=>`${p.Name||""}|${p.Race||""}|${p.Class||""}|${p.Profession||""}`===signature))supportCharacters.push(npc);
+      characterSheet["Support Characters"]=supportCharacters.map((p,i)=>`${i+1}. ${p.Name||"Unnamed"} • ${p.Race||"Unknown race"} • ${p.Class||p.Profession||"Support"}`).join("\n");
+    }
+    else if(source==="Character Builder"||source==="Backstory")Object.assign(characterSheet,result);
+    else if(source==="Weapon"){
+      const weapon=JSON.parse(JSON.stringify(result));
+      const signature=`${weapon.Name||""}|${weapon.Type||""}|${weapon.Effect||""}`;
+      if(!sheetWeapons.some(x=>`${x.Name||""}|${x.Type||""}|${x.Effect||""}`===signature))sheetWeapons.push(weapon);
+      characterSheet.Weapons=sheetWeapons.map((x,n)=>`${n+1}. ${x.Name} (${x.Type||"Weapon"})`).join("\n");
+      delete characterSheet.Weapon;delete sheetLinks.Weapon;
+    }
+    else if(source==="Magic Item"){const item=JSON.parse(JSON.stringify(result));sheetItems.push(item);characterSheet["Magic Items"]=sheetItems.map((x,n)=>`${n+1}. ${x.Name} (${x.Type||"Item"})`).join("\n");}
+    else if(source==="Quest"){characterSheet["Current Quest"]=result.Name||result.Objective;sheetLinks["Current Quest"]={generator:"Quest",result:JSON.parse(JSON.stringify(result))};}
+    else if(source==="Place"){characterSheet.Home=result.Name;sheetLinks.Home={generator:"Place",result:JSON.parse(JSON.stringify(result))};}
+    else if(source==="Party Name"){characterSheet.Party=result.Name;sheetLinks.Party={generator:"Party Name",result:JSON.parse(JSON.stringify(result))};}
+    resultCache.set("dnd:Character Sheet",JSON.parse(JSON.stringify(characterSheet)));showGenerator("Character Sheet",false);result={...characterSheet};render();
+  }
+  function openSheetRecord(target,index=null){
+    let link=null;
+    if(target==="Support Characters")link={generator:"Character Builder",result:supportCharacters[index]};
+    else if(target==="Weapons")link={generator:"Weapon",result:sheetWeapons[index]};
+    else if(target==="Magic Items")link={generator:"Magic Item",result:sheetItems[index]};
+    else link=sheetLinks[target];
+    if(!link)return;
+    showGenerator(link.generator,false);result=JSON.parse(JSON.stringify(link.result));resultCache.set(cacheKey(),result);render();
+  }
+  function removeSheetRecord(target,index=null){
+    if(target==="Support Characters"){supportCharacters.splice(index,1);if(supportCharacters.length)characterSheet[target]=supportCharacters.map((p,i)=>`${i+1}. ${p.Name} • ${p.Race||"Unknown race"} • ${p.Class||p.Profession||"Support"}`).join("\n");else delete characterSheet[target];}
+    else if(target==="Weapons"){sheetWeapons.splice(index,1);if(sheetWeapons.length)characterSheet[target]=sheetWeapons.map((x,i)=>`${i+1}. ${x.Name} (${x.Type||"Weapon"})`).join("\n");else delete characterSheet[target];}
+    else if(target==="Magic Items"){sheetItems.splice(index,1);if(sheetItems.length)characterSheet[target]=sheetItems.map((x,i)=>`${i+1}. ${x.Name} (${x.Type||"Item"})`).join("\n");else delete characterSheet[target];}
+    else{delete characterSheet[target];delete sheetLinks[target];}
+    result={...characterSheet};render();
+  }
+  function createBackstoryFromName(){if(game!=="dnd")return;saveCurrentFavorite();pendingBackstory={Name:result.Name,Race:result.Race,Class:result.Class};byId("generatorType").value="Backstory";generator="Backstory";buildControls();generateAll();window.scrollTo({top:0,behavior:"smooth"});}
+  function resultText(){return [byId("resultTitle").textContent,...Object.entries(result).map(([k,v])=>`\n${k.toUpperCase()}\n${v}`)].join("\n");}
+  function storageKey(){return `forge:${game}:${generator}`;}
+  function saved(){try{return JSON.parse(localStorage.getItem(storageKey())||"[]")}catch{return[];}}
+  function favoritePayload(){const p={text:resultText(),generator,result:{...result}};if(generator==="Quest")p.npcs=questGiverNpc?[questGiverNpc]:[];if(generator==="Place")p.npcs=[placeOwnerNpc,...placeWorkerNpcs].filter(Boolean);return p;}
+  function renderFavorites(){const list=saved();byId("favoritesList").innerHTML=list.map((raw,index)=>{const item=typeof raw==="string"?{text:raw,npcs:[]}:raw;const buttons=(item.npcs||[]).map((p,i)=>`<button class="favorite-open" data-fav-npc="${index}:${i}">Generate NPC: ${p.Name}</button>`).join("");return `<li class="favorite-item"><div><button class="favorite-restore" data-restore="${index}">Load favorite into generator</button><pre>${item.text}</pre>${buttons?`<div class="favorite-actions">${buttons}</div>`:""}</div><button class="remove" data-remove="${index}">Remove</button></li>`;}).join("");byId("emptyFavorites").hidden=list.length>0;document.querySelectorAll("[data-remove]").forEach(b=>b.onclick=()=>{const a=saved();a.splice(+b.dataset.remove,1);localStorage.setItem(storageKey(),JSON.stringify(a));renderFavorites();});document.querySelectorAll("[data-restore]").forEach(b=>b.onclick=()=>{const item=saved()[+b.dataset.restore];if(item&&typeof item==="object"&&item.result){result=JSON.parse(JSON.stringify(item.result));resultCache.set(cacheKey(),result);buildControls();if(byId("raceInput")&&result.Race)byId("raceInput").value=result.Race;if(byId("classInput")&&result.Class)byId("classInput").value=result.Class;if(byId("roleInput")&&result[roleLabel()])byId("roleInput").value=result[roleLabel()];if(byId("placeType")&&result.Type)byId("placeType").value=result.Type;if(byId("weaponType")&&result.Type)byId("weaponType").value=result.Type;if(byId("itemType")&&result.Type)byId("itemType").value=result.Type;render();}});document.querySelectorAll("[data-fav-npc]").forEach(b=>b.onclick=()=>{const [fi,ni]=b.dataset.favNpc.split(":").map(Number),item=saved()[fi];if(item&&item.npcs&&item.npcs[ni])openNpc(item.npcs[ni]);});}
+  function render(){updateSheetActionButton();resultCache.set(cacheKey(),JSON.parse(JSON.stringify(result)));byId("resultTitle").textContent=result.Name||generator;byId("resultFields").innerHTML=Object.entries(result).map(([key,value])=>{let action="";if(generator==="Quest"&&key==="Quest giver")action=`<button class="secondary-button npc-link" data-open-quest-npc>Generate NPC</button>`;if(generator==="Place"&&key==="Owner")action=`<button class="secondary-button npc-link" data-open-owner-npc>Generate owner NPC</button>`;if(generator==="Place"&&key==="Workers")action=placeWorkerNpcs.map((p,i)=>`<button class="secondary-button npc-link" data-open-worker="${i}">Generate ${p.Name}</button>`).join(" ");if(generator==="Character Name"&&key==="Seed")action+=`<button class="secondary-button npc-link" data-clear-output-seed>Clear seed</button>`;if(generator==="Character Library"&&key.startsWith("Record ")){const idx=Number(key.split(" ")[1])-1,entry=loadCharacterLibrary()[idx];if(entry)action+=`<span class="sheet-record-actions"><button class="secondary-button npc-link" data-library-open="${idx}">Open ${entry.data.Name||"record"}</button><button class="remove-record" data-library-remove="${idx}">Remove</button></span>`;}if(generator==="Character Sheet"){if(key==="Support Characters")action+=supportCharacters.map((p,i)=>`<span class="sheet-record-actions"><button class="secondary-button npc-link" data-sheet-open="Support Characters:${i}">Open ${p.Name}</button><button class="remove-record" data-sheet-remove="Support Characters:${i}">Remove</button></span>`).join("");else if(key==="Weapons")action+=sheetWeapons.map((x,i)=>`<span class="sheet-record-actions"><button class="secondary-button npc-link" data-sheet-open="Weapons:${i}">Open ${x.Name}</button><button class="remove-record" data-sheet-remove="Weapons:${i}">Remove</button></span>`).join("");else if(key==="Magic Items")action+=sheetItems.map((x,i)=>`<span class="sheet-record-actions"><button class="secondary-button npc-link" data-sheet-open="Magic Items:${i}">Open ${x.Name}</button><button class="remove-record" data-sheet-remove="Magic Items:${i}">Remove</button></span>`).join("");else if(sheetLinks[key])action+=`<span class="sheet-record-actions"><button class="secondary-button npc-link" data-sheet-open="${key}">Open ${sheetLinks[key].generator}</button><button class="remove-record" data-sheet-remove="${key}">Remove</button></span>`;}const activeLocks=locksFor();const lock=activeLocks?`<button class="lock-button ${activeLocks.has(key)?"locked":""}" data-lock="${key}">${activeLocks.has(key)?"Locked":"Lock"}</button>`:"";return `<div class="result-field ${String(value).length>65?"full":""} ${"has-lock"}"><span class="result-label">${key}</span><div class="result-value">${value}</div>${key==="Style"?"":`<button class="reroll" data-key="${key}">↻</button>`}${lock}${action}</div>`;}).join("");document.querySelectorAll("[data-create-backstory]").forEach(b=>b.onclick=createBackstoryFromName);document.querySelectorAll("[data-add-sheet]").forEach(b=>b.onclick=addCurrentToCharacterSheet);document.querySelectorAll("[data-sheet-open]").forEach(b=>b.onclick=()=>{const [target,index]=b.dataset.sheetOpen.split(":");openSheetRecord(target,index===undefined?null:+index);});document.querySelectorAll("[data-sheet-remove]").forEach(b=>b.onclick=()=>{const [target,index]=b.dataset.sheetRemove.split(":");removeSheetRecord(target,index===undefined?null:+index);});document.querySelectorAll("[data-key]").forEach(b=>b.onclick=()=>rerollField(b.dataset.key));document.querySelectorAll("[data-lock]").forEach(b=>b.onclick=()=>{const s=locksFor();s.has(b.dataset.lock)?s.delete(b.dataset.lock):s.add(b.dataset.lock);render();});const cs=document.querySelector("[data-clear-output-seed]");if(cs)cs.onclick=()=>{if(locksFor().has("Seed"))return;seedText="";result.Seed="Race-generated";const i=byId("seedInput");if(i)i.value="";render();};const qb=document.querySelector("[data-open-quest-npc]");if(qb)qb.onclick=()=>openNpc(questGiverNpc);const ob=document.querySelector("[data-open-owner-npc]");if(ob)ob.onclick=()=>openNpc(placeOwnerNpc);document.querySelectorAll("[data-open-worker]").forEach(b=>b.onclick=()=>openNpc(placeWorkerNpcs[+b.dataset.openWorker]));document.querySelectorAll("[data-library-open]").forEach(b=>b.onclick=()=>{const entry=loadCharacterLibrary()[+b.dataset.libraryOpen];if(!entry)return;const target=entry.kind==="Character"?"Full Character Stats":entry.kind==="NPC"?"NPC Stats":"Enemy & Monster";showGenerator(target,false);result=JSON.parse(JSON.stringify(entry.data));render();});document.querySelectorAll("[data-library-remove]").forEach(b=>b.onclick=()=>{const list=loadCharacterLibrary();list.splice(+b.dataset.libraryRemove,1);saveCharacterLibrary(list);resultCache.delete("dnd:Character Library");result=libraryResult();render();});renderFavorites();}
+
+  function updateSheetActionButton(){
+    const button=byId("addSheetButton");
+    if(!button)return;
+    const labels={
+      "Character Builder":result.Mode==="Support NPC"?"Add as NPC":"Add character",
+      "Weapon":"Add weapon",
+      "Magic Item":"Add item",
+      "Quest":"Add quest",
+      "Place":"Add home",
+      "Party Name":"Add party",
+      "Character Sheet":"Open full stats",
+      "Full Character Stats":"Save to library",
+      "NPC Stats":"Save NPC to library",
+      "Enemy & Monster":"Save enemy to library"
+    };
+    button.hidden=game!=="dnd"||!labels[generator];
+    button.textContent=labels[generator]||"Add to Character Sheet";
+  }
+  function lockAllFields(){
+    const locks=locksFor();
+    Object.keys(result).forEach(key=>locks.add(key));
+    render();
+  }
+  function unlockAllFields(){
+    locksFor().clear();
+    render();
+  }
+  function renderGeneratorTabs(){
+    const bar=byId("generatorTabs");if(!bar)return;
+    bar.innerHTML=generatorMap[game].map(name=>`<button type="button" class="generator-tab ${name===generator?"active":""}" data-generator="${name}">${name}</button>`).join("");
+    bar.querySelectorAll("[data-generator]").forEach(button=>button.onclick=()=>showGenerator(button.dataset.generator));
+    const sheet=byId("openCharacterSheet");if(sheet)sheet.hidden=game!=="dnd";
+  }
+  function showGenerator(next,createIfMissing=true){
+    if(result&&Object.keys(result).length)resultCache.set(cacheKey(),JSON.parse(JSON.stringify(result)));
+    generator=next;byId("generatorType").value=generator;renderGeneratorTabs();buildControls();const action=byId("generateAll");if(action)action.textContent=generator==="Card Pull"?"Pull":generator==="Dice Roller"?"Roll":generator==="Number Picker"?"Pick":generator==="Character Sheet"?"Generate Full Character":"Generate all";
+    const generateButton=byId("generateAll");if(generateButton)generateButton.hidden=generator==="Character Library";
+    if(generator==="Character Library"){result=libraryResult();resultCache.set(cacheKey(),JSON.parse(JSON.stringify(result)));render();return;}
+    const cached=resultCache.get(cacheKey());
+    if(cached){result=JSON.parse(JSON.stringify(cached));render();}
+    else if(createIfMissing)generateAll();
+  }
+  function populateGenerators(){
+    byId("generatorType").innerHTML=options(generatorMap[game]);
+    renderGeneratorTabs();
+    showGenerator(generatorMap[game][0]);
+  }
+
+  document.querySelectorAll(".tab").forEach(button=>button.addEventListener("click",()=>{
+    if(result&&Object.keys(result).length)resultCache.set(cacheKey(),JSON.parse(JSON.stringify(result)));
+    game = button.dataset.game;
+    document.querySelectorAll(".tab").forEach(tab=>tab.classList.toggle("active",tab===button));
+    populateGenerators();
+  }));
+  byId("generatorType").addEventListener("change",()=>showGenerator(byId("generatorType").value));
+  byId("openCharacterSheet").addEventListener("click",()=>{if(game!=="dnd"){game="dnd";document.querySelectorAll(".tab").forEach(tab=>tab.classList.toggle("active",tab.dataset.game==="dnd"));byId("generatorType").innerHTML=options(generatorMap.dnd);}showGenerator("Character Sheet");});
+  byId("generateAll").addEventListener("click",generateAll);
+  byId("lockAllButton").addEventListener("click",lockAllFields);
+  byId("unlockAllButton").addEventListener("click",unlockAllFields);
+  byId("addSheetButton").addEventListener("click",()=>{
+    if(generator==="Character Sheet"){showGenerator("Full Character Stats");return;}
+    if(["Full Character Stats","NPC Stats","Enemy & Monster"].includes(generator)){
+      const kind=generator==="Full Character Stats"?"Character":generator==="NPC Stats"?"NPC":"Enemy";
+      const list=loadCharacterLibrary();list.unshift(libraryEntryFromResult(kind));saveCharacterLibrary(list);resultCache.delete("dnd:Character Library");const status=byId("statusMessage");if(status){status.textContent="Saved to Character Library";setTimeout(()=>{if(status.textContent==="Saved to Character Library")status.textContent=""},2200);}if(generator==="Character Library")result=libraryResult();render();return;
+    }
+    addCurrentToCharacterSheet();
+  });
+  byId("copyButton").addEventListener("click",async()=>navigator.clipboard.writeText(resultText()));
+  byId("favoriteButton").addEventListener("click",()=>{saveCurrentFavorite();renderFavorites();});
+  byId("clearFavorites").addEventListener("click",()=>{localStorage.removeItem(storageKey());renderFavorites();});
+
+  populateGenerators();
+});
+
+</script></body>
+</html>
