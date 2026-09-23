@@ -131,15 +131,15 @@ document.addEventListener("DOMContentLoaded", function () {
   function buildControls() {
     const box = byId("controls");
     if (generator === "Character Name") {
-      box.innerHTML = `<label class="field wide"><span>Original name / random seed</span><input id="seedInput" value="${seedText}"></label><label class="field"><span>Race</span><select id="raceInput"><option>Random</option>${options(currentRaces())}</select></label><label class="field"><span>${roleLabel()}</span><select id="roleInput"><option>Random</option>${options(currentRoles())}</select></label><label class="field"><span>Style</span><select id="styleInput">${options(DATA.styles)}</select></label>`;
+      box.innerHTML = `<label class="field wide"><span>Original name / random seed</span><input id="seedInput" value="${seedText}"></label><label class="field"><span>Race (includes Random)</span><select id="raceInput"><option>Random</option>${options(currentRaces())}</select></label><label class="field"><span>${roleLabel()} (includes Random)</span><select id="roleInput"><option>Random</option>${options(currentRoles())}</select></label><label class="field"><span>Style</span><select id="styleInput">${options(DATA.styles)}</select></label>`;
     } else if (generator === "Backstory" || generator === "NPC") {
-      box.innerHTML = `<label class="field"><span>Race</span><select id="raceInput"><option>Random</option>${options(DATA.dndRaces)}</select></label><label class="field"><span>Class</span><select id="classInput"><option>Random</option>${options(DATA.classes)}</select></label>`;
+      box.innerHTML = `<label class="field"><span>Race (includes Random)</span><select id="raceInput"><option>Random</option>${options(DATA.dndRaces)}</select></label><label class="field"><span>Class</span><select id="classInput"><option>Random</option>${options(DATA.classes)}</select></label>`;
     } else if (generator === "Place") {
-      box.innerHTML = `<label class="field"><span>Place type</span><select id="placeType"><option>Random</option>${options(Object.keys(DATA.places))}</select></label><label class="field"><span>Total staff</span><select id="staffCount">${options([1,2,3,4])}</select></label>`;
+      box.innerHTML = `<label class="field"><span>Place type (includes Random)</span><select id="placeType"><option>Random</option>${options(Object.keys(DATA.places))}</select></label><label class="field"><span>Total staff</span><select id="staffCount">${options([1,2,3,4])}</select></label>`;
     } else if (generator === "Weapon") {
       box.innerHTML = `<label class="field"><span>Weapon type</span><select id="weaponType"><option>Random</option>${options(DATA.weaponTypes)}</select></label>`;
     } else if (generator === "Magic Item") {
-      box.innerHTML = `<label class="field"><span>Item type</span><select id="itemType"><option>Random</option>${options(["Wondrous Item","Ring","Wand","Armor","Potion","Scroll","Charm","Instrument","Tool","Rod","Staff","Clothing","Container"])}</select></label>`;
+      box.innerHTML = `<label class="field"><span>Item type (includes Random)</span><select id="itemType"><option>Random</option>${options(["Wondrous Item","Ring","Wand","Armor","Potion","Scroll","Charm","Instrument","Tool","Rod","Staff","Clothing","Container"])}</select></label>`;
     } else box.innerHTML = "";
   }
 
